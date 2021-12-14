@@ -23,6 +23,7 @@
 hs_err_pid*
 
 # intelliJ stuff
+*.iml
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij
@@ -133,4 +134,4 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
 
-# End of https://www.toptal.com/developers/gitignore/api/intellij
+# End of https://www.toptal.com/developers/gitignore/api/intellij	
