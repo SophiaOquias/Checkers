@@ -75,13 +75,24 @@ public class Dame {
         this.pos.setCol(col);
     }
 
-    public void capture(Position pos, Board board, Dame captured) {
-        this.move(pos, board); // move dame to new position
-        board.setDame(captured.getPos(), new Empty()); // remove captured dame
-    }
+    public void capture(Dame captured, Board board) {
+        if(this.color == Color.WHITE) {
+            if(captured.getCol() - this.getCol() == 1) { // if captured piece is to the right
+                this.move(this.getRow() - 2, this.getCol() + 2, board);
+            }
+            else if(captured.getCol() - this.getCol() == -1) { // if captured piece is to the left
+                this.move(this.getRow() - 2, this.getCol() - 2, board);
+            }
+        }
+        else {
+            if(this.getCol() - captured.getCol() == 1) { // if captured piece is to the right
+                this.move(this.getRow() + 2, this.getCol() - 2, board);
+            }
+            else if(this.getCol() - captured.getCol() == -1) { // if captured piece is to the left
+                this.move(this.getRow() + 2, this.getCol() + 2, board);
+            }
+        }
 
-    public void capture(int row, int col, Board board, Dame captured) {
-        this.move(row, col, board);
         board.setDame(captured.getPos(), new Empty());
     }
 }
