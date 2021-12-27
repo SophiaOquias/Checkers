@@ -38,7 +38,7 @@ public class BoardNode extends Board{
     }
 
     public void addChild(BoardNode node) {
-        this.children.add(node); 
+        this.children.add(node);
     }
 
     public int getAlpha() {
