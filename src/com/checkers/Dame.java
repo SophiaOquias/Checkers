@@ -55,8 +55,20 @@ public class Dame {
         this.pos = pos; // set new position of dame
     }
 
+    public void move(int row, int col, Board board) {
+        board.setDame(row, col, this);
+        board.setDame(this.getRow(), this.getCol(), new Empty());
+        this.pos.setRow(row);
+        this.pos.setCol(col);
+    }
+
     public void capture(Position pos, Board board, Dame captured) {
         this.move(pos, board); // move dame to new position
         board.setDame(captured.getPos(), new Empty()); // remove captured dame
+    }
+
+    public void capture(int row, int col, Board board, Dame captured) {
+        this.move(row, col, board);
+        board.setDame(captured.getPos(), new Empty());
     }
 }
