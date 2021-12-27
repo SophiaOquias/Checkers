@@ -36,7 +36,7 @@ public class Display {
 
         d.print(board);
 
-        board.getDame(4, 1).capture(new Position(2, 3), board, board.getDame(3, 2));
+        board.getDame(3, 2).capture(board.getDame(4, 1), board);
 
         d.print(board);
 
