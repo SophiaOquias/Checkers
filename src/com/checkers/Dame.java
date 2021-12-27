@@ -4,16 +4,25 @@ public class Dame {
     // PROPERTIES
     protected Position pos;
     protected Color color;
+    protected boolean isQueen;
 
     // CONSTRUCTORS
     public Dame(Position pos, Color color) {
         this.pos = pos;
         this.color = color;
+        this.isQueen = false;
     }
 
     public Dame(int row, int col, Color color) {
         this.pos = new Position(row, col);
         this.color = color;
+        this.isQueen = false;
+    }
+
+    public Dame(Dame dame) {
+        this.pos = dame.getPos();
+        this.color = dame.getColor();
+        this.isQueen = dame.isQueen();
     }
 
     public Dame() {
@@ -47,6 +56,10 @@ public class Dame {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public boolean isQueen() {
+        return this.isQueen;
     }
 
     public void move(Position pos, Board board) {

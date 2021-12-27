@@ -11,36 +11,6 @@ public class Board {
         this.dames = new Dame[SIZE][SIZE];
 
         // ADD DAMES
-        // white dames
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < SIZE; j++) {
-                if(i % 2 == 0 && j % 2 != 0) {
-                    this.dames[i][j] = new Dame(i, j, Color.WHITE);
-                }
-                else if(i % 2 != 0 && j % 2 == 0) {
-                    this.dames[i][j] = new Dame(i, j, Color.WHITE);
-                }
-                else {
-                    this.dames[i][j] = new Empty();
-                }
-            }
-        }
-
-        // black dames
-        for(int i = 5; i < SIZE; i++) {
-            for(int j = 0; j < SIZE; j++) {
-                if(i % 2 != 0 && j % 2 == 0) {
-                    this.dames[i][j] = new Dame(i, j, Color.BLACK);
-                }
-                else if(i % 2 == 0 && j % 2 != 0) {
-                    this.dames[i][j] = new Dame(i, j, Color.BLACK);
-                }
-                else {
-                    this.dames[i][j] = new Empty();
-                }
-            }
-        }
-
         for(int i = 0; i < SIZE; i++) {
             for(int j = 0; j < SIZE; j++) {
 
@@ -84,16 +54,11 @@ public class Board {
     public void copy(Board board) {
         for(int i = 0; i < SIZE; i++) {
             for(int j = 0; j < SIZE; j++) {
-                if(!(board.getDame(i, j) instanceof Empty)) {
-                    if(board.getDame(i, j).getColor() == Color.WHITE) {
-                        this.dames[i][j] = new Dame(i, j, Color.WHITE);
-                    }
-                    else {
-                        this.dames[i][j] = new Dame(i, j, Color.BLACK);
-                    }
+                if(board.getDame(i, j) instanceof Empty) {
+                    this.dames[i][j] = new Empty();
                 }
                 else {
-                    this.dames[i][j] = new Empty();
+                    this.dames[i][j] = new Dame(board.getDame(i, j));
                 }
             }
         }
