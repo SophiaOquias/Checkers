@@ -21,7 +21,7 @@ public class Board {
                     this.dames[i][j] = new Dame(i, j, Color.WHITE);
                 }
                 else {
-                    this.dames[i][j] = null;
+                    this.dames[i][j] = new Empty();
                 }
             }
         }
@@ -36,7 +36,40 @@ public class Board {
                     this.dames[i][j] = new Dame(i, j, Color.BLACK);
                 }
                 else {
-                    this.dames[i][j] = null;
+                    this.dames[i][j] = new Empty();
+                }
+            }
+        }
+
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+
+                // set white dames
+                if(i >= 0 && i < 3) {
+                    if(i % 2 == 0 && j % 2 != 0) {
+                        this.dames[i][j] = new Dame(i, j, Color.WHITE);
+                    }
+                    else if(i % 2 != 0 && j % 2 == 0) {
+                        this.dames[i][j] = new Dame(i, j, Color.WHITE);
+                    }
+                    else {
+                        this.dames[i][j] = new Empty();
+                    }
+                }
+                // set black dames
+                else if(i >= 5 && i < SIZE) {
+                    if(i % 2 != 0 && j % 2 == 0) {
+                        this.dames[i][j] = new Dame(i, j, Color.BLACK);
+                    }
+                    else if(i % 2 == 0 && j % 2 != 0) {
+                        this.dames[i][j] = new Dame(i, j, Color.BLACK);
+                    }
+                    else {
+                        this.dames[i][j] = new Empty();
+                    }
+                }
+                else {
+                    this.dames[i][j] = new Empty();
                 }
             }
         }
@@ -51,7 +84,7 @@ public class Board {
     public void copy(Board board) {
         for(int i = 0; i < SIZE; i++) {
             for(int j = 0; j < SIZE; j++) {
-                if(board.getDame(i, j) != null) {
+                if(!(board.getDame(i, j) instanceof Empty)) {
                     if(board.getDame(i, j).getColor() == Color.WHITE) {
                         this.dames[i][j] = new Dame(i, j, Color.WHITE);
                     }
@@ -60,7 +93,7 @@ public class Board {
                     }
                 }
                 else {
-                    this.dames[i][j] = null;
+                    this.dames[i][j] = new Empty();
                 }
             }
         }
@@ -92,17 +125,17 @@ public class Board {
     }
 
     public boolean isSquareOccupied(int row, int col) {
-        if(this.dames[row][col] != null)
-            return true;
+        if(this.dames[row][col] instanceof Empty)
+            return false;
 
-        return false;
+        return true;
     }
 
     public boolean isSquareOccupied(Position pos) {
-        if(this.dames[pos.getRow()][pos.getCol()] != null)
-            return true;
+        if(this.dames[pos.getRow()][pos.getCol()] instanceof Empty)
+            return false;
 
-        return false;
+        return true;
     }
 
     public Dame getDame(int row, int col) {
