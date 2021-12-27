@@ -19,6 +19,8 @@ public class Display {
             }
             System.out.println();
         }
+
+        System.out.println();
     }
 
     public static void main(String[] args) {
@@ -26,7 +28,15 @@ public class Display {
         Board board = new Board();
 
         d.print(board);
-        
+
+        board.getDame(5, 0).move(new Position(4, 1), board);
+        board.getDame(2, 3).move(new Position(3, 2), board);
+
+        d.print(board);
+
+        board.getDame(4, 1).capture(new Position(2, 3), board, board.getDame(3, 2));
+
+        d.print(board);
     }
 }
 
