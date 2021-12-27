@@ -17,10 +17,10 @@ public class Board {
                 // set white dames
                 if(i >= 0 && i < 3) {
                     if(i % 2 == 0 && j % 2 != 0) {
-                        this.dames[i][j] = new Dame(i, j, Color.WHITE);
+                        this.dames[i][j] = new Dame(i, j, Color.BLACK);
                     }
                     else if(i % 2 != 0 && j % 2 == 0) {
-                        this.dames[i][j] = new Dame(i, j, Color.WHITE);
+                        this.dames[i][j] = new Dame(i, j, Color.BLACK);
                     }
                     else {
                         this.dames[i][j] = new Empty();
@@ -29,10 +29,10 @@ public class Board {
                 // set black dames
                 else if(i >= 5 && i < SIZE) {
                     if(i % 2 != 0 && j % 2 == 0) {
-                        this.dames[i][j] = new Dame(i, j, Color.BLACK);
+                        this.dames[i][j] = new Dame(i, j, Color.WHITE);
                     }
                     else if(i % 2 == 0 && j % 2 != 0) {
-                        this.dames[i][j] = new Dame(i, j, Color.BLACK);
+                        this.dames[i][j] = new Dame(i, j, Color.WHITE);
                     }
                     else {
                         this.dames[i][j] = new Empty();
