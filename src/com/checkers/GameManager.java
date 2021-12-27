@@ -4,7 +4,7 @@ public class GameManager {
 
     // METHODS
     public boolean isMoveLegal(Dame dame, Position pos, Board board) {
-        if(dame.isQueen) {
+        if(dame.isQueen()) {
             if(board.isSquareOccupied(pos) ||
                     Math.abs(dame.getRow() - pos.getRow()) != 1 ||
                     Math.abs(dame.getCol()) - pos.getCol() != 1) {
@@ -25,6 +25,17 @@ public class GameManager {
                     return false;
                 }
             }
+        }
+
+        return true;
+    }
+
+    public boolean isCaptureLegal(Dame dame, Dame captured, Board board) {
+        if(dame.isQueen()) {
+            
+        }
+        else {
+
         }
 
         return true;
