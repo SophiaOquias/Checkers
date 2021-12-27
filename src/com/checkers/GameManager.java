@@ -174,7 +174,7 @@ public class GameManager {
                 }
         }
 
-        // still have to do queen possible movess
+        // still have to do queen possible moves
 
         return (Position[]) temp.toArray();
     }
