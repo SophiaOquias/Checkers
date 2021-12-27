@@ -16,6 +16,10 @@ public class Dame {
         this.color = color;
     }
 
+    public Dame() {
+
+    }
+
     // METHODS
     public Position getPos() {
         return pos;
@@ -54,5 +58,24 @@ public class Dame {
     public void capture(Position pos, Board board, Dame captured) {
         this.move(pos, board); // move dame to new position
         board.setDame(captured.getPos(), null); // remove captured dame
+    }
+
+    public static void main(String[] args) {
+        Board board = new Board();
+
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(board.getDame(i, j).getColor() == Color.WHITE) {
+                    System.out.print("W ");
+                }
+                if(board.getDame(i, j).getColor() == Color.BLACK) {
+                    System.out.print("B ");
+                }
+                if(board.getDame(i, j) == null) {
+                    System.out.print("- ");
+                }
+            }
+            System.out.println();
+        }
     }
 }
