@@ -29,6 +29,8 @@ public class Display {
 
         d.print(board);
 
+        System.out.println("WHITE: " + board.countWhite() + " BLACK: " + board.countBlack());
+
         board.getDame(5, 0).move(new Position(4, 1), board);
         board.getDame(2, 3).move(new Position(3, 2), board);
 
@@ -37,6 +39,9 @@ public class Display {
         board.getDame(4, 1).capture(new Position(2, 3), board, board.getDame(3, 2));
 
         d.print(board);
+
+        System.out.println("WHITE: " + board.countWhite() + " BLACK: " + board.countBlack());
+
     }
 }
 
