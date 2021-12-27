@@ -95,4 +95,8 @@ public class Dame {
 
         board.setDame(captured.getPos(), new Empty());
     }
+
+    public void promote() {
+        this.isQueen = true;
+    }
 }
