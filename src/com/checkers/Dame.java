@@ -53,6 +53,6 @@ public class Dame {
 
     public void capture(Position pos, Board board, Dame captured) {
         this.move(pos, board); // move dame to new position
-        board.setDame(captured.getPos(), null); // remove captured dame 
+        board.setDame(captured.getPos(), null); // remove captured dame
     }
 }
