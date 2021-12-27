@@ -38,7 +38,9 @@ public class Dame {
         this.color = color;
     }
 
-    // public void move
+    public void move(Position pos, Board board) {
 
-    // public void capture 
+    }
+
+    // public void capture
 }
