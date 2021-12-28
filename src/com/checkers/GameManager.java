@@ -42,10 +42,47 @@ public class GameManager {
 
     public boolean isCaptureLegal(Dame dame, Dame captured, Board board) {
         if(dame.isQueen()) {
-            
+            // check if captured dame is opposite color
+            if((dame.getColor() == Color.WHITE && captured.getColor() == Color.WHITE) ||
+                    (dame.getColor() == Color.BLACK && captured.getColor() == Color.BLACK)) {
+                return false;
+            }
+
+            // check if captured dame is in bounds
+            if(Math.abs(dame.getRow() - captured.getRow()) != 1 ||
+                    Math.abs(dame.getCol() - captured.getCol()) != 1) {
+                return false;
+            }
+
+            // get new position after capture
+            Position newPos = new Position();
+
+            // check if captured dame is above dame
+            if(dame.getRow() - captured.getRow() == 1) {
+                if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
+                    newPos.setPos(captured.getRow() - 2, captured.getCol() + 2);
+                }
+                else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
+                    newPos.setPos(captured.getRow() - 2, captured.getCol() - 2);
+                }
+            }
+            else {
+                if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
+                    newPos.setPos(captured.getRow() + 2, captured.getCol() - 2);
+                }
+                else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
+                    newPos.setPos(captured.getRow() + 2, captured.getCol() + 2);
+                }
+            }
+
         }
         else {
             if(dame.getColor() == Color.WHITE) {
+                // check if captured dame is opposite color
+                if(captured.getColor() != Color.BLACK) {
+                    return false;
+                }
+
                 // check if captured dame is in bounds
                 if(dame.getRow() - captured.getRow() != 1 ||
                         Math.abs(dame.getCol() - captured.getCol()) != 1) {
@@ -68,8 +105,20 @@ public class GameManager {
                         board.isSquareOccupied(newPos)) {
                     return false;
                 }
+
+                // check if position after capturing is within bounds
+                if(newPos.getRow() >= SIZE || newPos.getRow() < 0 ||
+                        newPos.getCol() >= SIZE || newPos.getCol() < 0 ||
+                        board.isSquareOccupied(newPos)) {
+                    return false;
+                }
             }
             else {
+                // check if captured dame is opposite color
+                if(captured.getColor() != Color.WHITE) {
+                    return false;
+                }
+
                 // check if captured dame is in bounds
                 if(dame.getRow() - captured.getRow() != -1 ||
                         Math.abs(dame.getCol() - captured.getCol()) != 1) {
