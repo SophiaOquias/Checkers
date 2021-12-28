@@ -30,6 +30,24 @@ public class Display {
 
         d.print(board);
 
+        System.out.println("Is white winner?: " + gm.isWhiteWinner(board));
+
+        // remove all black dames
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 8; j++) {
+                board.setDame(i, j, new Empty());
+            }
+        }
+
+        board.setDame(4, 1, new Dame(4, 1, Color.BLACK));
+
+        d.print(board);
+
+        System.out.println("B Possible moves: " +
+                gm.getPossibleMoves(board.getDame(4, 1), board).length);
+
+        System.out.println("Is white winner?: " + gm.isWhiteWinner(board));
+
         System.out.println("WHITE: " + board.countWhite() + " BLACK: " + board.countBlack());
 
 //        board.getDame(5, 0).move(new Position(4, 1), board);
