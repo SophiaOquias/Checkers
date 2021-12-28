@@ -60,18 +60,18 @@ public class GameManager {
             // check if captured dame is above dame
             if(dame.getRow() - captured.getRow() == 1) {
                 if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(captured.getRow() - 2, captured.getCol() + 2);
+                    newPos.setPos(dame.getRow() - 2, dame.getCol() - 2);
                 }
                 else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(captured.getRow() - 2, captured.getCol() - 2);
+                    newPos.setPos(dame.getRow() - 2, dame.getCol() + 2);
                 }
             }
             else {
                 if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(captured.getRow() + 2, captured.getCol() - 2);
+                    newPos.setPos(dame.getRow() + 2, dame.getCol() - 2);
                 }
                 else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(captured.getRow() + 2, captured.getCol() + 2);
+                    newPos.setPos(dame.getRow() + 2, dame.getCol() + 2);
                 }
             }
 
@@ -79,7 +79,7 @@ public class GameManager {
         else {
             if(dame.getColor() == Color.WHITE) {
                 // check if captured dame is opposite color
-                if(captured.getColor() != Color.BLACK) {
+                if(captured.getColor() == Color.WHITE) {
                     return false;
                 }
 
@@ -93,10 +93,10 @@ public class GameManager {
                 Position newPos = new Position();
 
                 if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(captured.getRow() - 2, captured.getCol() + 2);
+                    newPos.setPos(dame.getRow() - 2, dame.getCol() - 2);
                 }
                 else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(captured.getRow() - 2, captured.getCol() - 2);
+                    newPos.setPos(dame.getRow() - 2, dame.getCol() + 2);
                 }
 
                 // check if position after capturing is within bounds
@@ -129,10 +129,10 @@ public class GameManager {
                 Position newPos = new Position();
 
                 if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(captured.getRow() + 2, captured.getCol() - 2);
+                    newPos.setPos(dame.getRow() + 2, dame.getCol() - 2);
                 }
                 else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(captured.getRow() + 2, captured.getCol() + 2);
+                    newPos.setPos(dame.getRow() + 2, dame.getCol() + 2);
                 }
 
                 // check if position after capturing is within bounds
@@ -207,7 +207,7 @@ public class GameManager {
 
             int nextrow = (dame.getColor() == Color.WHITE) ? row - 1 : row + 1;
 
-            for(int i = col - 1; i < col + 1; i += 2) {
+            for(int i = col - 1; i <= col + 1; i += 2) {
 
                 // check if position is within bounds
                 if(i >= 0 && i < SIZE && nextrow >= 0 && nextrow < SIZE) {
@@ -243,7 +243,7 @@ public class GameManager {
         if(isWhiteMandatory(board) || isBlackMandatory(board))
             return true;
 
-        return false; 
+        return false;
     }
 
     public boolean isWhiteMandatory(Board board) {
@@ -318,6 +318,36 @@ public class GameManager {
                 }
             }
         }
+        return false;
+    }
+
+    public int getNumPossibleMoves(Board board, Color color) {
+        int count = 0;
+
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                if(board.getDame(i, j).getColor() == color) {
+                    count += getPossibleMoves(board.getDame(i, j), board).length;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public boolean isWhiteWinner(Board board) {
+
+        if(board.countWhite() == 0 || getNumPossibleMoves(board, Color.WHITE) == 0)
+            return true;
+
+        return false;
+    }
+
+    public boolean isBlackWinner(Board board) {
+
+        if(board.countBlack() == 0 || getNumPossibleMoves(board, Color.BLACK) == 0)
+            return true;
+
         return false;
     }
 }
