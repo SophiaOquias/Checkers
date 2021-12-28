@@ -50,6 +50,8 @@ public class Display {
 
         System.out.println("WHITE: " + board.countWhite() + " BLACK: " + board.countBlack());
 
+        System.out.println("Is there a mandatory move?: " + gm.isMandatory(board));
+
 //        board.getDame(5, 0).move(new Position(4, 1), board);
 //        board.getDame(2, 3).move(new Position(3, 2), board);
 //
