@@ -42,7 +42,7 @@ public class GameManager {
 
     public boolean isCaptureLegal(Dame dame, Dame captured, Board board) {
         if(dame.isQueen()) {
-
+            
         }
         else {
             if(dame.getColor() == Color.WHITE) {
@@ -116,66 +116,77 @@ public class GameManager {
     public Position[] getPossibleMoves(Dame dame, Board board) {
         ArrayList<Position> temp = new ArrayList<>();
 
-        int upperBound;
-        int lowerBound;
+        int row = dame.getRow();
+        int col = dame.getCol();
 
-        if(dame.getCol() == 0) { // if dame is on the left edge
+        if(dame.isQueen()) {
 
-            Position newPos;
-            if(dame.getColor() == Color.WHITE) {
-                newPos = new Position(dame.getRow() - 1, dame.getCol() + 1);
-            }
-            else {
-                newPos = new Position(dame.getRow() + 1, dame.getCol() + 1);
-            }
-            if (board.getDame(newPos) instanceof Empty) {
-                if (isMoveLegal(dame, newPos, board)) {
-                    temp.add(newPos);
-                }
-            } else {
-                if (isCaptureLegal(dame, board.getDame(newPos), board)) {
-                    temp.add(newPos);
-                }
-            }
-        }
-        else if(dame.getCol() == SIZE - 1) { // if dame is on the right edge
-            Position newPos;
-            if(dame.getColor() == Color.WHITE) {
-                newPos = new Position(dame.getRow() - 1, dame.getCol() - 1);
-            }
-            else {
-                newPos = new Position(dame.getRow() + 1, dame.getCol() - 1);
-            }
+            // check all diagonals
+            for(int i = row - 1; i <= row + 1; i += 2) {
+                for(int j = col - 1; j <= col + 1; j += 2) {
 
-            if (board.getDame(newPos) instanceof Empty) {
-                if (isMoveLegal(dame, newPos, board)) {
-                    temp.add(newPos);
-                }
-            } else {
-                if (isCaptureLegal(dame, board.getDame(newPos), board)) {
-                    temp.add(newPos);
-                }
-            }
-        }
-        else {
-            for(int i = dame.getCol() - 1; i <= dame.getCol() + 1; i += 2) {
-                    if(dame.getColor() == Color.WHITE) {
-                        if (board.getDame(dame.getRow() - 1, i) instanceof Empty) {
-                            if (isMoveLegal(dame, new Position(dame.getRow() - 1, i), board)) {
-                                temp.add(new Position(dame.getRow() - 1, i));
+                    // check if position is within bounds of the board
+                    if(i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
+
+                        // check if position is an empty square
+                        if(board.getDame(row, col) instanceof Empty) {
+                            if(isMoveLegal(dame, new Position(row, col), board)) {
+                                temp.add(new Position(row, col));
                             }
                         }
-                        else {
-                            if (isCaptureLegal(dame, board.getDame(new Position(dame.getRow() - 1, i)), board)) {
-                                temp.add(new Position(dame.getRow() - 1, i));
+                        // else check if it as an opposing dame (opposite color)
+                        else if(dame.getColor() == Color.WHITE &&
+                                board.getDame(row, col).getColor() == Color.BLACK){
+                            if(isCaptureLegal(dame, board.getDame(row, col), board)) {
+                                temp.add(new Position(row, col));
                             }
+                        }
+                        else if(dame.getColor() == Color.BLACK &&
+                                board.getDame(row, col).getColor() == Color.WHITE) {
+                            if(isCaptureLegal(dame, board.getDame(row, col), board)) {
+                                temp.add(new Position(row, col));
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+        else {
+
+            int nextrow = (dame.getColor() == Color.WHITE) ? row - 1 : row + 1;
+
+            for(int i = col - 1; i < col + 1; i += 2) {
+
+                // check if position is within bounds
+                if(i >= 0 && i < SIZE && nextrow >= 0 && nextrow < SIZE) {
+
+                    // check if position is an empty square
+                    if(board.getDame(nextrow, i) instanceof Empty) {
+                        if(isMoveLegal(dame, new Position(nextrow, i), board)) {
+                            temp.add(new Position(nextrow, i));
+                        }
+                    }
+                    // check if position contains an opposing dame
+                    else if(board.getDame(nextrow, i).getColor() == Color.BLACK) {
+                        if(isCaptureLegal(dame, board.getDame(nextrow, i), board)) {
+                            temp.add(new Position(nextrow, i));
                         }
                     }
                 }
+            }
+
         }
 
-        // still have to do queen possible moves
+        // copy arrayList to array
+        Position[] moves = new Position[temp.size()];
 
-        return (Position[]) temp.toArray();
+        for(int i = 0; i < temp.size(); i++) {
+            moves[i] = temp.get(i);
+        }
+
+        return moves;
     }
 }
