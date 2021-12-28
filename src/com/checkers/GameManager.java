@@ -239,6 +239,13 @@ public class GameManager {
         return moves;
     }
 
+    public boolean isMandatory(Board board) {
+        if(isWhiteMandatory(board) || isBlackMandatory(board))
+            return true;
+
+        return false; 
+    }
+
     public boolean isWhiteMandatory(Board board) {
 
         // check all pieces in board
