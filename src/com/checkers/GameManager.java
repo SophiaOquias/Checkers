@@ -238,4 +238,79 @@ public class GameManager {
 
         return moves;
     }
+
+    public boolean isWhiteMandatory(Board board) {
+
+        // check all pieces in board
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                // check if selected piece is a dame and is white
+                if(!(board.getDame(i, j) instanceof Empty) && board.getDame(i, j).getColor() == Color.WHITE) {
+                    // check if queen
+                    if(board.getDame(i, j).isQueen()) {
+                        // check top and bottom diagonals
+                        if (checkAllDiagonals(board, i, j)) return true;
+                    }
+                    else {
+                        int row = i - 1;
+                        // check only top diagonals
+                        if (checkDiagonals(board, i, j, row)) return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isBlackMandatory(Board board) {
+        // check all pieces in board
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                // check if selected piece is a dame and is white
+                if(!(board.getDame(i, j) instanceof Empty) && board.getDame(i, j).getColor() == Color.BLACK) {
+                    // check if queen
+                    if(board.getDame(i, j).isQueen()) {
+                        // check top and bottom diagonals
+                        if (checkAllDiagonals(board, i, j)) return true;
+                    }
+                    else {
+                        int row = i + 1;
+                        // check only bottom diagonals
+                        if (checkDiagonals(board, i, j, row)) return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkDiagonals(Board board, int i, int j, int row) {
+        for(int col = j - 1; col <= j + 1; col += 2) {
+            // check if in bounds
+            if(col >= 0 && col < SIZE && row >= 0) {
+                if (!(board.getDame(row, col) instanceof Empty) &&
+                        isCaptureLegal(board.getDame(i, j), board.getDame(row, col), board)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkAllDiagonals(Board board, int i, int j) {
+        for(int row = i - 1; row <= i + 1; row += 2) {
+            for(int col = j - 1; col <= j + 1; col += 2) {
+                // check if selected position is within bounds
+                if(col >= 0 && col < SIZE && row >= 0 && row < SIZE) {
+                    if (!(board.getDame(row, col) instanceof Empty) &&
+                            isCaptureLegal(board.getDame(i, j), board.getDame(row, col), board)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
