@@ -1,24 +1,33 @@
 package com.checkers;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class BoardNode extends Board{
 
     private boolean isVisited;
-    private LinkedList<BoardNode> children;
+    private ArrayList<BoardNode> children;
     int alpha;
     int beta;
     boolean isMax;
 
-    public BoardNode(Board board) {
+    public BoardNode(Board board, boolean isMax) {
         super(board);
 
         this.isVisited = false;
-        this.children = new LinkedList<>();
+        this.children = new ArrayList<>();
         this.alpha = Integer.MIN_VALUE;
         this.beta = Integer.MIN_VALUE;
-        this.isMax = true;
+        this.isMax = isMax;
+    }
 
+    public BoardNode(BoardNode node, boolean isMax) {
+        super(node);
+
+        this.isVisited = false;
+        this.children = new ArrayList<>();
+        this.alpha = node.getAlpha();
+        this.beta = node.getBeta();
+        this.isMax = isMax;
     }
 
     public boolean isVisited() {
@@ -29,11 +38,11 @@ public class BoardNode extends Board{
         isVisited = visited;
     }
 
-    public LinkedList<BoardNode> getChildren() {
+    public ArrayList<BoardNode> getChildren() {
         return children;
     }
 
-    public void setChildren(LinkedList<BoardNode> children) {
+    public void setChildren(ArrayList<BoardNode> children) {
         this.children = children;
     }
 
