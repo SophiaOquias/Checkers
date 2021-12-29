@@ -10,7 +10,16 @@ public class MaxBot {
 
     // METHODS
     // without move ordering
-    public void createTree(BoardNode root) {
+    public void createTree(BoardNode root, int depth) {
+
+        if(depth < MAX_DEPTH) {
+            Color color = (depth % 2 == 0) ? Color.WHITE : Color.BLACK;
+
+            root.setChildren(getChildren(root, color));
+            for (int i = 0; i < root.getChildren().size(); i++) {
+                createTree(root.getChildren().get(i), depth + 1);
+            }
+        }
 
     }
 
