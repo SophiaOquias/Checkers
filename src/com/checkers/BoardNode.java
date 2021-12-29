@@ -11,7 +11,7 @@ public class BoardNode extends Board{
     boolean isMax;
 
     public BoardNode(Board board, boolean isMax) {
-        super(board);
+        copy(board);
 
         this.isVisited = false;
         this.children = new ArrayList<>();
@@ -21,13 +21,26 @@ public class BoardNode extends Board{
     }
 
     public BoardNode(BoardNode node, boolean isMax) {
-        super(node);
+        copy(node);
 
         this.isVisited = false;
         this.children = new ArrayList<>();
         this.alpha = node.getAlpha();
         this.beta = node.getBeta();
         this.isMax = isMax;
+    }
+
+    public void copy(Board board) {
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                if(board.getDame(i, j) instanceof Empty) {
+                    this.dames[i][j] = new Empty();
+                }
+                else {
+                    this.dames[i][j] = new Dame(board.getDame(i, j));
+                }
+            }
+        }
     }
 
     public boolean isVisited() {

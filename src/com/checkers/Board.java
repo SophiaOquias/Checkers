@@ -45,24 +45,7 @@ public class Board {
         }
     }
 
-    // copy constructor
-    public Board(Board board) {
-        this.copy(board);
-    }
-
     // METHODS
-    public void copy(Board board) {
-        for(int i = 0; i < SIZE; i++) {
-            for(int j = 0; j < SIZE; j++) {
-                if(board.getDame(i, j) instanceof Empty) {
-                    this.dames[i][j] = new Empty();
-                }
-                else {
-                    this.dames[i][j] = new Dame(board.getDame(i, j));
-                }
-            }
-        }
-    }
     public int countWhite() {
         int count = 0;
 
