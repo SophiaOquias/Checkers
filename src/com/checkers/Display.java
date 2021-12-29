@@ -37,10 +37,10 @@ public class Display {
 
         System.out.println("Number of chidlren: " + node.getChildren().size());
 
-//        for(int i = 0; i < node.getChildren().size(); i++) {
-//            System.out.println("i: " + i);
-//            d.print(node.getChildren().get(i));
-//        }
+        for(int i = 0; i < node.getChildren().size(); i++) {
+            System.out.println("i: " + i);
+            d.print(node.getChildren().get(i));
+        }
 
 //        System.out.println("Is white winner?: " + gm.isWhiteWinner(board));
 //
