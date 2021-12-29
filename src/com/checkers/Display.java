@@ -33,7 +33,7 @@ public class Display {
         BoardNode node = new BoardNode(board, true);
         MaxBot bot = new MaxBot();
 
-        node.setChildren(bot.getWhiteChildren(node));
+        node.setChildren(bot.getChildren(node, Color.WHITE));
 
         System.out.println("Number of chidlren: " + node.getChildren().size());
 
