@@ -20,7 +20,7 @@ public class Dame {
     }
 
     public Dame(Dame dame) {
-        this.pos = dame.getPos();
+        this.pos = new Position(dame.getRow(), dame.getCol());
         this.color = dame.getColor();
         this.isQueen = dame.isQueen();
     }
