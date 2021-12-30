@@ -28,6 +28,7 @@ public class Display {
             // print all children
             System.out.println("Depth: " + depth);
             for(int i = 0; i < node.getChildren().size(); i++) {
+                System.out.println("Utility: " + node.getChildren().get(i).getUtility());
                 print(node.getChildren().get(i));
             }
 
@@ -68,8 +69,8 @@ public class Display {
 //        System.out.println("Is there a mandatory move?: " + gm.isMandatory(board));
 
         board.getDame(5, 0).move(new Position(4, 1), board); // white move
-        board.getDame(2, 3).move(new Position(3, 2), board); // black move
-
+//        board.getDame(2, 3).move(new Position(3, 2), board); // black move
+//
         d.print(board);
 
 //        System.out.println("Is mandatory move: " + gm.isMandatory(board, Color.WHITE));
@@ -82,7 +83,11 @@ public class Display {
 
         bot.createTree(node, 0);
 
-        d.printTree(node, 1);
+//        bot.determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+//        d.printTree(node, 1);
+
+        d.print(bot.getBestMove(board));
 
 //        node.setChildren(bot.getChildren(node, Color.WHITE));
 //
