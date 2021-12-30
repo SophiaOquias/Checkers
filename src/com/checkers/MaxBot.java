@@ -13,7 +13,7 @@ public class MaxBot {
     public void createTree(BoardNode root, int depth) {
 
         if(depth < MAX_DEPTH) {
-            Color color = (depth % 2 == 0) ? Color.WHITE : Color.BLACK;
+            Color color = (depth % 2 != 0) ? Color.WHITE : Color.BLACK;
 
             root.setChildren(getChildren(root, color));
             for (int i = 0; i < root.getChildren().size(); i++) {
@@ -90,6 +90,37 @@ public class MaxBot {
     // void for now
     public void getBestMove(Board board) {
 
+    }
+
+    public void determineValues(BoardNode node, boolean isMaxPlayer, int alpha, int beta) {
+        if(node.getChildren().size() == 0) {
+            node.setUtility(determineUtility(node));
+        }
+
+        if(isMaxPlayer) {
+            int maxValue = Integer.MIN_VALUE;
+
+            for(int i = 0; i < node.getChildren().size(); i++) {
+                determineValues(node.getChildren().get(i), false, alpha, beta);
+                maxValue = Math.max(maxValue, node.getChildren().get(i).getUtility());
+                node.setUtility(maxValue);
+                alpha = Math.max(alpha, maxValue);
+                if(alpha >= beta)
+                    break;
+            }
+        }
+        else {
+            int minValue = Integer.MAX_VALUE;
+
+            for(int i = 0; i < node.getChildren().size(); i++) {
+                determineValues(node.getChildren().get(i), true, alpha, beta);
+                minValue = Math.min(minValue, node.getChildren().get(i).getUtility());
+                node.setUtility(minValue);
+                beta = Math.min(beta, minValue);
+                if(alpha >= beta)
+                    break;
+            }
+        }
     }
 
     public int determineUtility(BoardNode board) {
