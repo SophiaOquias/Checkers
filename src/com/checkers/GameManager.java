@@ -41,110 +41,81 @@ public class GameManager {
     }
 
     public boolean isCaptureLegal(Dame dame, Dame captured, Board board) {
-        if(dame.isQueen()) {
-            // check if captured dame is opposite color
-            if((dame.getColor() == Color.WHITE && captured.getColor() == Color.WHITE) ||
-                    (dame.getColor() == Color.BLACK && captured.getColor() == Color.BLACK)) {
-                return false;
-            }
+        // check if captured dame is opposite color
+        if(dame.getColor() == captured.getColor()) {
+            return false;
+        }
 
+        if(dame.isQueen()) {
             // check if captured dame is in bounds
             if(Math.abs(dame.getRow() - captured.getRow()) != 1 ||
                     Math.abs(dame.getCol() - captured.getCol()) != 1) {
                 return false;
             }
-
-            // get new position after capture
-            Position newPos = new Position();
-
-            // check if captured dame is above dame
-            if(dame.getRow() - captured.getRow() == 1) {
-                if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(dame.getRow() - 2, dame.getCol() - 2);
-                }
-                else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(dame.getRow() - 2, dame.getCol() + 2);
-                }
-            }
-            else {
-                if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(dame.getRow() + 2, dame.getCol() - 2);
-                }
-                else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(dame.getRow() + 2, dame.getCol() + 2);
-                }
-            }
-
         }
         else {
             if(dame.getColor() == Color.WHITE) {
-                // check if captured dame is opposite color
-                if(captured.getColor() == Color.WHITE) {
-                    return false;
-                }
-
                 // check if captured dame is in bounds
                 if(dame.getRow() - captured.getRow() != 1 ||
                         Math.abs(dame.getCol() - captured.getCol()) != 1) {
                     return false;
                 }
-
-                // get new position of dame after capture
-                Position newPos = new Position();
-
-                if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(dame.getRow() - 2, dame.getCol() - 2);
-                }
-                else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(dame.getRow() - 2, dame.getCol() + 2);
-                }
-
-                // check if position after capturing is within bounds
-                if(newPos.getRow() >= SIZE || newPos.getRow() < 0 ||
-                        newPos.getCol() >= SIZE || newPos.getCol() < 0 ||
-                        board.isSquareOccupied(newPos)) {
-                    return false;
-                }
-
-                // check if position after capturing is within bounds
-                if(newPos.getRow() >= SIZE || newPos.getRow() < 0 ||
-                        newPos.getCol() >= SIZE || newPos.getCol() < 0 ||
-                        board.isSquareOccupied(newPos)) {
-                    return false;
-                }
             }
             else {
-                // check if captured dame is opposite color
-                if(captured.getColor() != Color.WHITE) {
-                    return false;
-                }
-
                 // check if captured dame is in bounds
                 if(dame.getRow() - captured.getRow() != -1 ||
                         Math.abs(dame.getCol() - captured.getCol()) != 1) {
                     return false;
                 }
-
-                // get new position of dame after capture
-                Position newPos = new Position();
-
-                if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
-                    newPos.setPos(dame.getRow() + 2, dame.getCol() - 2);
-                }
-                else if(dame.getCol() - captured.getCol() == -1) { // if captured dame is to the left
-                    newPos.setPos(dame.getRow() + 2, dame.getCol() + 2);
-                }
-
-                // check if position after capturing is within bounds
-                if(newPos.getRow() >= SIZE || newPos.getRow() < 0 ||
-                        newPos.getCol() >= SIZE || newPos.getCol() < 0 ||
-                        board.isSquareOccupied(newPos)) {
-                    return false;
-                }
             }
         }
 
+        // get new position of dame after capture
+        Position newPos = getNewPosition(dame, captured);
+
+        // check if position after capturing is within bounds
+        if(newPos.getRow() >= SIZE || newPos.getRow() < 0 ||
+                newPos.getCol() >= SIZE || newPos.getCol() < 0 ||
+                board.isSquareOccupied(newPos)) {
+            return false;
+        }
+
         return true;
+    }
+
+    private Position getNewPosition(Dame dame, Dame captured) {
+        if(dame.isQueen()) {
+            if(dame.getRow() - captured.getRow() == 1) {
+                return getUpRowPos(dame, captured);
+            }
+            else {
+                return getDownRowPos(dame, captured);
+            }
+        }
+        else {
+            if(dame.getColor() == Color.WHITE) {
+                return getUpRowPos(dame, captured);
+            }
+            else {
+                return getDownRowPos(dame, captured);
+            }
+        }
+    }
+
+    private Position getUpRowPos(Dame dame, Dame captured) {
+        if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
+            return new Position(dame.getRow() - 2, dame.getCol() - 2);
+        }
+        // if captured dame is to the left
+        return new Position(dame.getRow() - 2, dame.getCol() + 2);
+    }
+
+    private Position getDownRowPos(Dame dame, Dame captured) {
+        if(dame.getCol() - captured.getCol() == 1) { // if captured dame is to the right
+            return new Position(dame.getRow() + 2, dame.getCol() - 2);
+        }
+        // if captured dame is to the left
+        return new Position(dame.getRow() + 2, dame.getCol() + 2);
     }
 
     public boolean isPromotable(Dame dame) {
