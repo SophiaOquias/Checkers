@@ -88,8 +88,24 @@ public class MaxBot {
     }
 
     // void for now
-    public void getBestMove(Board board) {
+    public BoardNode getBestMove(Board board) {
+        BoardNode node = new BoardNode(board, true);
 
+        createTree(node, 0);
+
+        determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+        BoardNode bestNode = node;
+
+        int max = Integer.MIN_VALUE; // initialize max value
+        for(int i = 0; i < node.getChildren().size(); i++) {
+            if(max < node.getChildren().get(i).getUtility()) {
+                max = node.getChildren().get(i).getUtility();
+                bestNode = node.getChildren().get(i);
+            }
+        }
+
+        return bestNode;
     }
 
     public void determineValues(BoardNode node, boolean isMaxPlayer, int alpha, int beta) {
