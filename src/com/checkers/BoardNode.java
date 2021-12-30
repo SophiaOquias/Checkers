@@ -6,8 +6,7 @@ public class BoardNode extends Board{
 
     private boolean isVisited;
     private ArrayList<BoardNode> children;
-    int alpha;
-    int beta;
+    int utility;
     boolean isMax;
 
     public BoardNode(Board board, boolean isMax) {
@@ -15,9 +14,8 @@ public class BoardNode extends Board{
 
         this.isVisited = false;
         this.children = new ArrayList<>();
-        this.alpha = Integer.MIN_VALUE;
-        this.beta = Integer.MIN_VALUE;
         this.isMax = isMax;
+        this.utility = (isMax) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
     }
 
     public BoardNode(BoardNode node, boolean isMax) {
@@ -25,9 +23,8 @@ public class BoardNode extends Board{
 
         this.isVisited = false;
         this.children = new ArrayList<>();
-        this.alpha = node.getAlpha();
-        this.beta = node.getBeta();
         this.isMax = isMax;
+        this.utility = (isMax) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
     }
 
     public void copy(Board board) {
@@ -63,20 +60,12 @@ public class BoardNode extends Board{
         this.children.add(node);
     }
 
-    public int getAlpha() {
-        return alpha;
+    public int getUtility() {
+        return utility;
     }
 
-    public void setAlpha(int alpha) {
-        this.alpha = alpha;
-    }
-
-    public int getBeta() {
-        return beta;
-    }
-
-    public void setBeta(int beta) {
-        this.beta = beta;
+    public void setUtility(int value) {
+        this.utility = value;
     }
 
     public boolean isMax() {
