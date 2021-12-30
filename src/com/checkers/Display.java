@@ -87,6 +87,14 @@ public class Display {
 
 //        d.printTree(node, 1);
 
+        board = bot.getBestMove(board);
+
+        d.print(board);
+
+        board.getDame(6, 1).move(5, 0, board);
+
+        d.print(board);
+
         d.print(bot.getBestMove(board));
 
 //        node.setChildren(bot.getChildren(node, Color.WHITE));
