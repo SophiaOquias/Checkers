@@ -246,6 +246,15 @@ public class GameManager {
         return false;
     }
 
+    public boolean isMandatory(Board board, Color color) {
+        if(color == Color.WHITE) {
+            return isWhiteMandatory(board);
+        }
+        else {
+            return isBlackMandatory(board);
+        }
+    }
+
     public boolean isWhiteMandatory(Board board) {
 
         // check all pieces in board
