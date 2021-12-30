@@ -25,7 +25,6 @@ public class MaxBot {
 
     public ArrayList<BoardNode> getChildren(BoardNode board, Color color) {
         ArrayList<BoardNode> children = new ArrayList<>();
-        GameManager gm = new GameManager();
         boolean isMax = color != Color.WHITE;
 
         for(int i = 0; i < SIZE; i++) {
@@ -67,16 +66,22 @@ public class MaxBot {
 
     private void makeChildren(BoardNode board, ArrayList<BoardNode> children, boolean isMax, int i, int j, Dame currentDame, int row, int col) {
         GameManager gm = new GameManager();
-        if (board.getDame(row, col) instanceof Empty) {
+
+        // makes sure that there are no mandatory moves to be done
+        // if there is a mandatory move, piece does nothing if it cannot capture anything
+        // if capture is possible, it performs the capture
+        if (!gm.isMandatory(board, currentDame.getColor()) && board.getDame(row, col) instanceof Empty) {
             if (gm.isMoveLegal(currentDame, new Position(row, col), board)) {
                 BoardNode child = new BoardNode(board, isMax);
                 child.getDame(i, j).move(row, col, child);
                 children.add(child);
             }
-        } else {
+
+        // makes sure that there is a dame in the space to avoid erroneous array access
+        } else if(!(board.getDame(row, col) instanceof Empty)){
             if(gm.isCaptureLegal(currentDame, board.getDame(row, col), board)) {
                 BoardNode child = new BoardNode(board, isMax);
-                child.getDame(i, j).capture(board.getDame(row, col), board);
+                child.getDame(i, j).capture(child.getDame(row, col), child);
                 children.add(child);
             }
         }
