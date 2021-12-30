@@ -30,17 +30,7 @@ public class Display {
 
         d.print(board);
 
-        BoardNode node = new BoardNode(board, true);
-        MaxBot bot = new MaxBot();
 
-        node.setChildren(bot.getChildren(node, Color.WHITE));
-
-        System.out.println("Number of chidlren: " + node.getChildren().size());
-
-        for(int i = 0; i < node.getChildren().size(); i++) {
-            System.out.println("i: " + i);
-            d.print(node.getChildren().get(i));
-        }
 
 //        System.out.println("Is white winner?: " + gm.isWhiteWinner(board));
 //
@@ -63,10 +53,27 @@ public class Display {
 //
 //        System.out.println("Is there a mandatory move?: " + gm.isMandatory(board));
 
-//        board.getDame(5, 0).move(new Position(4, 1), board);
-//        board.getDame(2, 3).move(new Position(3, 2), board);
-//
-//        d.print(board);
+        board.getDame(5, 0).move(new Position(4, 1), board); // white move
+        board.getDame(2, 3).move(new Position(3, 2), board); // black move
+
+        d.print(board);
+
+//        System.out.println("Is mandatory move: " + gm.isMandatory(board, Color.WHITE));
+
+//        System.out.println("Is capture legal?: " +
+//                gm.isCaptureLegal(board.getDame(4, 1), board.getDame(3, 2), board));
+
+        BoardNode node = new BoardNode(board, true);
+        MaxBot bot = new MaxBot();
+
+        node.setChildren(bot.getChildren(node, Color.WHITE));
+
+        System.out.println("Number of children: " + node.getChildren().size());
+
+        for(int i = 0; i < node.getChildren().size(); i++) {
+            System.out.println("i: " + i);
+            d.print(node.getChildren().get(i));
+        }
 //
 //        System.out.println("Is there a mandatory move?: " + gm.isWhiteMandatory(board));
 //
