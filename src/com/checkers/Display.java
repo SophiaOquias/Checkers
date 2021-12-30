@@ -23,6 +23,20 @@ public class Display {
         System.out.println();
     }
 
+    public void printTree(BoardNode node, int depth) {
+        if(node.getChildren().size() > 0) {
+            // print all children
+            System.out.println("Depth: " + depth);
+            for(int i = 0; i < node.getChildren().size(); i++) {
+                print(node.getChildren().get(i));
+            }
+
+            for(int i = 0; i < node.getChildren().size(); i++) {
+                printTree(node.getChildren().get(i), depth + 1);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Display d = new Display();
         Board board = new Board();
@@ -66,14 +80,18 @@ public class Display {
         BoardNode node = new BoardNode(board, true);
         MaxBot bot = new MaxBot();
 
-        node.setChildren(bot.getChildren(node, Color.WHITE));
+        bot.createTree(node, 0);
 
-        System.out.println("Number of children: " + node.getChildren().size());
+        d.printTree(node, 1);
 
-        for(int i = 0; i < node.getChildren().size(); i++) {
-            System.out.println("i: " + i);
-            d.print(node.getChildren().get(i));
-        }
+//        node.setChildren(bot.getChildren(node, Color.WHITE));
+//
+//        System.out.println("Number of children: " + node.getChildren().size());
+//
+//        for(int i = 0; i < node.getChildren().size(); i++) {
+//            System.out.println("i: " + i);
+//            d.print(node.getChildren().get(i));
+//        }
 //
 //        System.out.println("Is there a mandatory move?: " + gm.isWhiteMandatory(board));
 //
