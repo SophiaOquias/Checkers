@@ -76,24 +76,39 @@ public class Dame {
     }
 
     public void capture(Dame captured, Board board) {
-        if(this.color == Color.WHITE) {
-            if(captured.getCol() - this.getCol() == 1) { // if captured piece is to the right
-                this.move(this.getRow() - 2, this.getCol() + 2, board);
+        if(this.isQueen()) {
+            if(this.getRow() - captured.getRow() == 1) { // if captured dame is above dame
+                captureUp(captured, board);
             }
-            else if(captured.getCol() - this.getCol() == -1) { // if captured piece is to the left
-                this.move(this.getRow() - 2, this.getCol() - 2, board);
+            else {
+                captureDown(captured, board);
             }
         }
         else {
-            if(this.getCol() - captured.getCol() == 1) { // if captured piece is to the right
-                this.move(this.getRow() + 2, this.getCol() - 2, board);
-            }
-            else if(this.getCol() - captured.getCol() == -1) { // if captured piece is to the left
-                this.move(this.getRow() + 2, this.getCol() + 2, board);
+            if (this.color == Color.WHITE) {
+                captureUp(captured, board);
+            } else {
+                captureDown(captured, board);
             }
         }
 
         board.setDame(captured.getPos(), new Empty());
+    }
+
+    private void captureDown(Dame captured, Board board) {
+        if (this.getCol() - captured.getCol() == 1) { // if captured piece is to the right
+            this.move(this.getRow() + 2, this.getCol() - 2, board);
+        } else if (this.getCol() - captured.getCol() == -1) { // if captured piece is to the left
+            this.move(this.getRow() + 2, this.getCol() + 2, board);
+        }
+    }
+
+    private void captureUp(Dame captured, Board board) {
+        if (captured.getCol() - this.getCol() == 1) { // if captured piece is to the right
+            this.move(this.getRow() - 2, this.getCol() + 2, board);
+        } else if (captured.getCol() - this.getCol() == -1) { // if captured piece is to the left
+            this.move(this.getRow() - 2, this.getCol() - 2, board);
+        }
     }
 
     public void promote() {
