@@ -1,9 +1,21 @@
 package com.checkers;
 
+import java.util.Scanner;
+
 public class Display {
 
     public void print(Board board) {
+
+        System.out.print(" ");
+
+        for(int i = 0 ; i < 8; i++) {
+            System.out.print(" " + i);
+        }
+
+        System.out.println();
+
         for(int i = 0; i < 8; i++) {
+            System.out.print(i + " ");
             for(int j = 0; j < 8; j++) {
                 if(board.getDame(i, j) instanceof Empty) {
                     System.out.print("- ");
@@ -19,6 +31,7 @@ public class Display {
             }
             System.out.println();
         }
+        System.out.println("White: " + board.countWhite() + " Black: " + board.countBlack());
 
         System.out.println();
     }
@@ -38,82 +51,58 @@ public class Display {
         }
     }
 
+    public static Position getPlayerInput() {
+        Scanner sc = new Scanner(System.in);
+        int row;
+        int col;
+
+        // get row input
+        do {
+            System.out.println("Input row: ");
+            row = Integer.parseInt(sc.nextLine());
+        } while(row < 0 || row >= 8);
+
+        // get col input
+        do {
+            System.out.println("Input col: ");
+            col = Integer.parseInt(sc.nextLine());
+        } while(col < 0 || col >= 8);
+
+        sc.close();
+
+        return new Position(row, col);
+    }
+
     public static void main(String[] args) {
         Display d = new Display();
         Board board = new Board();
         GameManager gm = new GameManager();
-
-        d.print(board);
-
-
-
-//        System.out.println("Is white winner?: " + gm.isWhiteWinner(board));
-//
-//        // remove all black dames
-//        for(int i = 0; i < 3; i++) {
-//            for(int j = 0; j < 8; j++) {
-//                board.setDame(i, j, new Empty());
-//            }
-//        }
-//
-//        board.setDame(4, 1, new Dame(4, 1, Color.BLACK));
-//
-//        d.print(board);
-//
-//        System.out.println("Num Possible moves: " + gm.getNumPossibleMoves(board, Color.WHITE));
-//
-//        System.out.println("Is white winner?: " + gm.isWhiteWinner(board));
-//
-//        System.out.println("WHITE: " + board.countWhite() + " BLACK: " + board.countBlack());
-//
-//        System.out.println("Is there a mandatory move?: " + gm.isMandatory(board));
-
-        board.getDame(5, 0).move(new Position(4, 1), board); // white move
-//        board.getDame(2, 3).move(new Position(3, 2), board); // black move
-//
-        d.print(board);
-
-//        System.out.println("Is mandatory move: " + gm.isMandatory(board, Color.WHITE));
-
-//        System.out.println("Is capture legal?: " +
-//                gm.isCaptureLegal(board.getDame(4, 1), board.getDame(3, 2), board));
-
-        BoardNode node = new BoardNode(board, true);
         MaxBot bot = new MaxBot();
 
-        bot.createTree(node, 0);
-
-//        bot.determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
-
-//        d.printTree(node, 1);
-
-        board = bot.getBestMove(board);
-
         d.print(board);
 
-        board.getDame(6, 1).move(5, 0, board);
+        // mock game
+        while(!gm.isWhiteWinner(board) || !gm.isBlackWinner(board)) {
+            // white turn
+            // select a dame
+            System.out.println("Select a dame: ");
+            Dame selected = board.getDame(getPlayerInput());
+            System.out.println("Select move: ");
+            Position selection = getPlayerInput();
+            if(board.getDame(selection) instanceof Empty) {
+                selected.move(selection, board);
+            }
+            else {
+                selected.capture(board.getDame(selection), board);
+            }
 
-        d.print(board);
+            d.print(board);
 
-        d.print(bot.getBestMove(board));
+            // black turn
+            board = bot.getBestMove(board);
 
-//        node.setChildren(bot.getChildren(node, Color.WHITE));
-//
-//        System.out.println("Number of children: " + node.getChildren().size());
-//
-//        for(int i = 0; i < node.getChildren().size(); i++) {
-//            System.out.println("i: " + i);
-//            d.print(node.getChildren().get(i));
-//        }
-//
-//        System.out.println("Is there a mandatory move?: " + gm.isWhiteMandatory(board));
-//
-//        board.getDame(3, 2).capture(board.getDame(4, 1), board);
-//
-//        d.print(board);
-//
-//        System.out.println("WHITE: " + board.countWhite() + " BLACK: " + board.countBlack());
-
+            d.print(board);
+        }
     }
 }
 
