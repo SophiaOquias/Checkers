@@ -81,8 +81,42 @@ public class MaxBot {
         } else if(!(board.getDame(row, col) instanceof Empty)){
             if(gm.isCaptureLegal(currentDame, board.getDame(row, col), board)) {
                 BoardNode child = new BoardNode(board, isMax);
+                Position newPos = gm.getNewPosition(currentDame, board.getDame(row, col));
                 child.getDame(i, j).capture(child.getDame(row, col), child);
                 children.add(child);
+
+//                System.out.println("Is mandatory?: " + gm.isMandatory(child, currentDame.getColor()));
+
+                while(gm.isMandatory(child, currentDame.getColor())) {
+                    currentDame = child.getDame(newPos.getRow(), newPos.getCol());
+                    if(currentDame.isQueen()) {
+                        for(int x = newPos.getRow() - 1; x <= newPos.getRow() + 1; x++) {
+                            for(int y = newPos.getCol() - 1; y <= newPos.getCol() + 1; y++) {
+                                if(x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+                                    if(!(child.getDame(x, y) instanceof Empty)) {
+                                        if(gm.isCaptureLegal(currentDame, child.getDame(x, y), child)) {
+                                            newPos = gm.getNewPosition(currentDame, child.getDame(x, y));
+                                            currentDame.capture(child.getDame(x, y), child);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        int x = (currentDame.getColor() == Color.WHITE) ? newPos.getRow() - 1 : newPos.getRow() + 1;
+                        for(int y = newPos.getCol() - 1; y <= newPos.getCol() + 1; y++) {
+                            if(x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+                                if(!(child.getDame(x, y) instanceof Empty)) {
+                                    if(gm.isCaptureLegal(currentDame, child.getDame(x, y), child)) {
+                                        newPos = gm.getNewPosition(currentDame, child.getDame(x, y));
+                                        currentDame.capture(child.getDame(x, y), child);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
