@@ -83,7 +83,7 @@ public class GameManager {
         return true;
     }
 
-    private Position getNewPosition(Dame dame, Dame captured) {
+    public Position getNewPosition(Dame dame, Dame captured) {
         if(dame.isQueen()) {
             if(dame.getRow() - captured.getRow() == 1) {
                 return getUpRowPos(dame, captured);
@@ -276,7 +276,7 @@ public class GameManager {
     private boolean checkDiagonals(Board board, int i, int j, int row) {
         for(int col = j - 1; col <= j + 1; col += 2) {
             // check if in bounds
-            if(col >= 0 && col < SIZE && row >= 0) {
+            if(col >= 0 && col < SIZE && row >= 0 && row < SIZE) {
                 if (!(board.getDame(row, col) instanceof Empty) &&
                         isCaptureLegal(board.getDame(i, j), board.getDame(row, col), board)) {
                     return true;
