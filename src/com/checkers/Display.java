@@ -51,24 +51,21 @@ public class Display {
         }
     }
 
-    public static Position getPlayerInput() {
-        Scanner sc = new Scanner(System.in);
+    public static Position getPlayerInput(Scanner sc) {
         int row;
         int col;
 
         // get row input
         do {
-            System.out.println("Input row: ");
+            System.out.print("Input row: ");
             row = Integer.parseInt(sc.nextLine());
         } while(row < 0 || row >= 8);
 
         // get col input
         do {
-            System.out.println("Input col: ");
+            System.out.print("Input col: ");
             col = Integer.parseInt(sc.nextLine());
         } while(col < 0 || col >= 8);
-
-        sc.close();
 
         return new Position(row, col);
     }
@@ -78,22 +75,29 @@ public class Display {
         Board board = new Board();
         GameManager gm = new GameManager();
         MaxBot bot = new MaxBot();
+        Scanner sc = new Scanner(System.in);
 
         d.print(board);
 
         // mock game
-        while(!gm.isWhiteWinner(board) || !gm.isBlackWinner(board)) {
+        while(!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
             // white turn
             // select a dame
             System.out.println("Select a dame: ");
-            Dame selected = board.getDame(getPlayerInput());
+            Position selected;
+            do {
+                selected = getPlayerInput(sc);
+            } while(board.getDame(selected) instanceof Empty);
+            Dame selectedDame = board.getDame(selected);
+
+            // select a move
             System.out.println("Select move: ");
-            Position selection = getPlayerInput();
+            Position selection = getPlayerInput(sc);
             if(board.getDame(selection) instanceof Empty) {
-                selected.move(selection, board);
+                selectedDame.move(selection, board);
             }
             else {
-                selected.capture(board.getDame(selection), board);
+                selectedDame.capture(board.getDame(selection), board);
             }
 
             d.print(board);
@@ -103,6 +107,8 @@ public class Display {
 
             d.print(board);
         }
+
+        sc.close();
     }
 }
 
