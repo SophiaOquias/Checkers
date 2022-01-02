@@ -41,6 +41,8 @@ public class GameUI extends JPanel{
         this.isSelection = false;
         this.isWhiteMove = true;
 
+        this.statusbar.setText("Welcome to checkers!");
+
         // sets size of panel
         this.setPreferredSize(
                 new Dimension(
@@ -216,12 +218,10 @@ public class GameUI extends JPanel{
                 }
 
             }
-            else {
-                if(gm.isBlackWinner(board))
-                    statusbar.setText("Bot Wins!");
-                else
-                    statusbar.setText("Human Wins!");
-            }
+            if(gm.isBlackWinner(board))
+                statusbar.setText("Bot Wins!");
+            if(gm.isWhiteWinner(board))
+                statusbar.setText("Human Wins!");
 
         }
     }
