@@ -73,6 +73,11 @@ public class Dame {
         board.setDame(this.getRow(), this.getCol(), new Empty());
         this.pos.setRow(row);
         this.pos.setCol(col);
+
+        if((this.color == Color.WHITE && this.getRow() == 0) ||
+                (this.color == Color.BLACK  && this.getRow() == 7)) {
+            this.promote();
+        }
     }
 
     public void capture(Dame captured, Board board) {
