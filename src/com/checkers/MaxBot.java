@@ -87,7 +87,7 @@ public class MaxBot {
 
 //                System.out.println("Is mandatory?: " + gm.isMandatory(child, currentDame.getColor()));
 
-                while(gm.isMandatory(child, currentDame.getColor())) {
+                while(gm.canStillCapture(child, child.getDame(newPos.getRow(), newPos.getCol()))) {
                     currentDame = child.getDame(newPos.getRow(), newPos.getCol());
                     if(currentDame.isQueen()) {
                         for(int x = newPos.getRow() - 1; x <= newPos.getRow() + 1; x++) {
