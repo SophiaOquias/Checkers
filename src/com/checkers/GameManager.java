@@ -273,6 +273,16 @@ public class GameManager {
         return false;
     }
 
+    public boolean canStillCapture(Board board, Dame dame) {
+        if(dame.isQueen()) {
+            return checkAllDiagonals(board, dame.getRow(), dame.getCol());
+        }
+        else {
+            int row = (dame.getColor() == Color.WHITE) ? dame.getRow() - 1 : dame.getRow() + 1;
+            return checkDiagonals(board, dame.getRow(), dame.getCol(), row);
+        }
+    }
+
     private boolean checkDiagonals(Board board, int i, int j, int row) {
         for(int col = j - 1; col <= j + 1; col += 2) {
             // check if in bounds
@@ -288,15 +298,7 @@ public class GameManager {
 
     private boolean checkAllDiagonals(Board board, int i, int j) {
         for(int row = i - 1; row <= i + 1; row += 2) {
-            for(int col = j - 1; col <= j + 1; col += 2) {
-                // check if selected position is within bounds
-                if(col >= 0 && col < SIZE && row >= 0 && row < SIZE) {
-                    if (!(board.getDame(row, col) instanceof Empty) &&
-                            isCaptureLegal(board.getDame(i, j), board.getDame(row, col), board)) {
-                        return true;
-                    }
-                }
-            }
+            checkDiagonals(board, i, j, row);
         }
         return false;
     }
