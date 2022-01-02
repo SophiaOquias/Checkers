@@ -22,10 +22,16 @@ public class Display {
                 }
                 else {
                     if (board.getDame(i, j).getColor() == Color.WHITE) {
-                        System.out.print("W ");
+                        if(board.getDame(i, j).isQueen)
+                            System.out.print("W ");
+                        else
+                            System.out.print("w ");
                     }
                     if (board.getDame(i, j).getColor() == Color.BLACK) {
-                        System.out.print("B ");
+                        if(board.getDame(i, j).isQueen)
+                            System.out.print("B ");
+                        else
+                            System.out.print("b ");
                     }
                 }
             }
@@ -79,35 +85,52 @@ public class Display {
 
         d.print(board);
 
-        // mock game
-        while(!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
-            // white turn
-            // select a dame
-            System.out.println("Select a dame: ");
-            Position selected;
-            do {
-                selected = getPlayerInput(sc);
-            } while(board.getDame(selected) instanceof Empty);
-            Dame selectedDame = board.getDame(selected);
+//        // mock game
+//        while(!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
+//            // white turn
+//            // select a dame
+//            System.out.println("Select a dame: ");
+//            Position selected;
+//            do {
+//                selected = getPlayerInput(sc);
+//            } while(board.getDame(selected) instanceof Empty);
+//            Dame selectedDame = board.getDame(selected);
+//
+//            // select a move
+//            System.out.println("Select move: ");
+//            Position selection = getPlayerInput(sc);
+//            if(board.getDame(selection) instanceof Empty) {
+//                selectedDame.move(selection, board);
+//            }
+//            else {
+//                selectedDame.capture(board.getDame(selection), board);
+//            }
+//
+//            d.print(board);
+//
+//            // black turn
+//            board = bot.getBestMove(board);
+//
+//            d.print(board);
+//        }
 
-            // select a move
-            System.out.println("Select move: ");
-            Position selection = getPlayerInput(sc);
-            if(board.getDame(selection) instanceof Empty) {
-                selectedDame.move(selection, board);
-            }
-            else {
-                selectedDame.capture(board.getDame(selection), board);
-            }
+//        for(int i = 0; i < 8; i++) {
+//            for(int j = 0; j < 8; j++) {
+//                board.setDame(i, j, new Empty());
+//            }
+//        }
 
-            d.print(board);
+        board.setDame(3, 2, new Dame(3, 2, Color.WHITE));
+        board.setDame(2, 1, new Dame(2, 1, Color.BLACK));
+        board.setDame(2, 3, new Dame(2, 3, Color.BLACK));
+        board.getDame(2, 1).move(3, 0, board);
 
-            // black turn
-            board = bot.getBestMove(board);
+        d.print(board);
+        System.out.println(gm.isBlackMandatory(board));
 
-            d.print(board);
-        }
-
+//        board = bot.getBestMove(board);
+//
+//        d.print(board);
         sc.close();
     }
 }
