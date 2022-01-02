@@ -17,7 +17,7 @@ public class GameManager {
         if(dame.isQueen()) {
             if(board.isSquareOccupied(pos) ||
                     Math.abs(dame.getRow() - pos.getRow()) != 1 ||
-                    Math.abs(dame.getCol()) - pos.getCol() != 1) {
+                    Math.abs(dame.getCol() - pos.getCol()) != 1) {
                 return false;
             }
         }
@@ -149,22 +149,16 @@ public class GameManager {
                     if(i >= 0 && i < SIZE && j >= 0 && j < SIZE) {
 
                         // check if position is an empty square
-                        if(board.getDame(row, col) instanceof Empty) {
-                            if(isMoveLegal(dame, new Position(row, col), board)) {
-                                temp.add(new Position(row, col));
+                        // and if there is no mandatory move to be made
+                        if(!isMandatory(board, dame.getColor()) &&
+                                board.getDame(i, j) instanceof Empty) {
+                            if(isMoveLegal(dame, new Position(i, j), board)) {
+                                temp.add(new Position(i, j));
                             }
                         }
-                        // else check if it as an opposing dame (opposite color)
-                        else if(dame.getColor() == Color.WHITE &&
-                                board.getDame(row, col).getColor() == Color.BLACK){
-                            if(isCaptureLegal(dame, board.getDame(row, col), board)) {
-                                temp.add(new Position(row, col));
-                            }
-                        }
-                        else if(dame.getColor() == Color.BLACK &&
-                                board.getDame(row, col).getColor() == Color.WHITE) {
-                            if(isCaptureLegal(dame, board.getDame(row, col), board)) {
-                                temp.add(new Position(row, col));
+                        else {
+                            if(isCaptureLegal(dame, board.getDame(i, j), board)) {
+                                temp.add(new Position(i, j));
                             }
                         }
 
@@ -184,13 +178,15 @@ public class GameManager {
                 if(i >= 0 && i < SIZE && nextrow >= 0 && nextrow < SIZE) {
 
                     // check if position is an empty square
+                    // and if there are any mandatory moves to be made
                     if(board.getDame(nextrow, i) instanceof Empty) {
-                        if(isMoveLegal(dame, new Position(nextrow, i), board)) {
+                        if(!isMandatory(board, dame.getColor()) &&
+                                isMoveLegal(dame, new Position(nextrow, i), board)) {
                             temp.add(new Position(nextrow, i));
                         }
                     }
                     // check if position contains an opposing dame
-                    else if(board.getDame(nextrow, i).getColor() == Color.BLACK) {
+                    else {
                         if(isCaptureLegal(dame, board.getDame(nextrow, i), board)) {
                             temp.add(new Position(nextrow, i));
                         }
@@ -236,12 +232,14 @@ public class GameManager {
                     // check if queen
                     if(board.getDame(i, j).isQueen()) {
                         // check top and bottom diagonals
-                        if (checkAllDiagonals(board, i, j)) return true;
+                        if (checkAllDiagonals(board, i, j))
+                            return true;
                     }
                     else {
                         int row = i - 1;
                         // check only top diagonals
-                        if (checkDiagonals(board, i, j, row)) return true;
+                        if (checkDiagonals(board, i, j, row))
+                            return true;
                     }
                 }
             }
@@ -259,12 +257,14 @@ public class GameManager {
                     // check if queen
                     if(board.getDame(i, j).isQueen()) {
                         // check top and bottom diagonals
-                        if (checkAllDiagonals(board, i, j)) return true;
+                        if(checkAllDiagonals(board, i, j))
+                            return true;
                     }
                     else {
                         int row = i + 1;
                         // check only bottom diagonals
-                        if (checkDiagonals(board, i, j, row)) return true;
+                        if(checkDiagonals(board, i, j, row))
+                            return true;
                     }
                 }
             }
@@ -297,8 +297,10 @@ public class GameManager {
     }
 
     private boolean checkAllDiagonals(Board board, int i, int j) {
+
         for(int row = i - 1; row <= i + 1; row += 2) {
-            checkDiagonals(board, i, j, row);
+            if(checkDiagonals(board, i, j, row))
+                return true;
         }
         return false;
     }
