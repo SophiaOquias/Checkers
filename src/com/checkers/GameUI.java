@@ -2,6 +2,8 @@ package com.checkers;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GameUI extends JPanel{
 
@@ -9,10 +11,13 @@ public class GameUI extends JPanel{
     private Board board;
     private GameManager gm;
     private MaxBot bot;
+    private boolean isWhiteMove;
 
     // gui components
     private Image[] images;
     private JLabel statusbar;
+    private boolean isSelection;
+    private Position selection;
 
     // constants
     private final int BOARD_SIZE = 8;
@@ -33,6 +38,8 @@ public class GameUI extends JPanel{
         loadImages();
         initBoard();
         this.statusbar = statusbar;
+        this.isSelection = false;
+        this.isWhiteMove = true;
 
         // sets size of panel
         this.setPreferredSize(
@@ -57,12 +64,17 @@ public class GameUI extends JPanel{
         this.board = new Board();
         this.gm = new GameManager();
         this.bot = new MaxBot();
+        this.addMouseListener(new PieceSelector());
     }
 
     @Override
     public void paintComponent(Graphics g) {
         paintBoard(g);
         paintDames(g);
+
+        if(isSelection && isInBoard(selection.getRow(), selection.getCol())) {
+            paintMoves(g);
+        }
     }
 
     public void paintBoard(Graphics g) {
@@ -110,6 +122,104 @@ public class GameUI extends JPanel{
                     }
                 }
             }
+        }
+    }
+
+    public void paintMoves(Graphics g) {
+        Position[] moves = gm.getPossibleMoves(board.getDame(selection), board);
+
+        for(int i = 0; i < moves.length; i++) {
+            int x = moves[i].getCol() * IMG_SIZE;
+            int y = moves[i].getRow() * IMG_SIZE;
+            g.drawImage(images[MOVE], x, y, this);
+        }
+    }
+
+    private boolean isInBoard(int x, int y) {
+        if(x < BOARD_SIZE * IMG_SIZE && y < BOARD_SIZE * IMG_SIZE)
+            return true;
+
+        return false;
+    }
+
+    private boolean isInMoves(Position pos) {
+        Position[] moves = gm.getPossibleMoves(board.getDame(selection), board);
+
+        for(int i = 0; i < moves.length; i++) {
+            if(pos.getRow() == moves[i].getRow() &&
+                    pos.getCol() == moves[i].getCol()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private class PieceSelector extends MouseAdapter {
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+            int x = e.getX();
+            int y = e.getY();
+
+            int cRow = y / IMG_SIZE;
+            int cCol = x / IMG_SIZE;
+
+            if(!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
+
+                if (isWhiteMove && !isSelection) {
+                    if (isInBoard(x, y)) {
+                        if (e.getButton() == MouseEvent.BUTTON1) {
+                            if (!(board.getDame(cRow, cCol) instanceof Empty) &&
+                                    board.getDame(cRow, cCol).getColor() == Color.WHITE) {
+                                isSelection = true;
+                                selection = new Position(cRow, cCol);
+                                repaint();
+                            } else {
+                                isSelection = false;
+                            }
+                        }
+                    }
+                } else {
+                    Position move = new Position(cRow, cCol);
+
+                    if (isInBoard(x, y)) {
+                        if (e.getButton() == MouseEvent.BUTTON1) {
+                            if (isInMoves(move)) {
+                                if (board.getDame(move) instanceof Empty) {
+                                    board.getDame(selection).move(move, board);
+                                    isWhiteMove = false;
+                                } else {
+                                    Dame captured = board.getDame(move);
+                                    Position newPos = gm.getNewPosition(board.getDame(selection), captured);
+                                    board.getDame(selection).capture(captured, board);
+                                    if(!gm.canStillCapture(board, board.getDame(newPos)))
+                                        isWhiteMove = false;
+                                }
+                            }
+                        }
+                    }
+
+                    isSelection = false;
+                    repaint();
+
+                    // black move
+                    if(!isWhiteMove) {
+                        board = bot.getBestMove(board);
+                        repaint();
+                        isWhiteMove = true;
+                    }
+
+                }
+            }
+            else {
+                if(gm.isBlackWinner(board))
+                    statusbar.setText("Bot Wins!");
+                else
+                    statusbar.setText("Human Wins!");
+            }
+
         }
     }
 }
