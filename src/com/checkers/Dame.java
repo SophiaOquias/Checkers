@@ -66,6 +66,13 @@ public class Dame {
         board.setDame(pos.getRow(), pos.getCol(), this); // move dame to new pos
         board.setDame(this.getRow(), this.getCol(), new Empty()); // set old position to Empty
         this.pos = pos; // set new position of dame
+
+        if(!this.isQueen()) {
+            if ((this.color == Color.WHITE && this.getRow() == 0) ||
+                    (this.color == Color.BLACK && this.getRow() == 7)) {
+                this.promote();
+            }
+        }
     }
 
     public void move(int row, int col, Board board) {
@@ -74,9 +81,11 @@ public class Dame {
         this.pos.setRow(row);
         this.pos.setCol(col);
 
-        if((this.color == Color.WHITE && this.getRow() == 0) ||
-                (this.color == Color.BLACK  && this.getRow() == 7)) {
-            this.promote();
+        if(!this.isQueen()) {
+            if ((this.color == Color.WHITE && this.getRow() == 0) ||
+                    (this.color == Color.BLACK && this.getRow() == 7)) {
+                this.promote();
+            }
         }
     }
 
