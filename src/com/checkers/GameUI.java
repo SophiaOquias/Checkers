@@ -74,7 +74,7 @@ public class GameUI extends JPanel{
         paintBoard(g);
         paintDames(g);
 
-        if(isSelection && isInBoard(selection.getRow(), selection.getCol())) {
+        if(isSelection && isInBoard(selection)) {
             paintMoves(g);
         }
     }
@@ -138,7 +138,16 @@ public class GameUI extends JPanel{
     }
 
     private boolean isInBoard(int x, int y) {
-        if(x < BOARD_SIZE * IMG_SIZE && y < BOARD_SIZE * IMG_SIZE)
+        if(x >= 0 && x < BOARD_SIZE * IMG_SIZE
+                && y >= 0 && y < BOARD_SIZE * IMG_SIZE)
+            return true;
+
+        return false;
+    }
+
+    private boolean isInBoard(Position pos) {
+        if(pos.getRow() >= 0 && pos.getRow() < BOARD_SIZE &&
+                pos.getCol() >= 0 && pos.getCol() < BOARD_SIZE)
             return true;
 
         return false;
@@ -168,11 +177,11 @@ public class GameUI extends JPanel{
             int cRow = y / IMG_SIZE;
             int cCol = x / IMG_SIZE;
 
-            if(!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
+            if(isInBoard(new Position(cRow, cCol))) {
+                if (!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
 
-                if(isWhiteMove) {
-                    if(!isSelection) {
-                        if (isInBoard(x, y)) {
+                    if (isWhiteMove) {
+                        if (!isSelection) {
                             if (e.getButton() == MouseEvent.BUTTON1) {
                                 if (!(board.getDame(cRow, cCol) instanceof Empty) &&
                                         board.getDame(cRow, cCol).getColor() == Color.WHITE) {
@@ -183,46 +192,46 @@ public class GameUI extends JPanel{
                                     isSelection = false;
                                 }
                             }
-                        }
-                    } else {
-                        Position move = new Position(cRow, cCol);
+                        } else {
+                            Position move = new Position(cRow, cCol);
 
-                        if (isInBoard(x, y)) {
-                            if (e.getButton() == MouseEvent.BUTTON1) {
-                                if (isInMoves(move)) {
-                                    if (board.getDame(move) instanceof Empty) {
-                                        board.getDame(selection).move(move, board);
-                                        isWhiteMove = false;
-                                    } else {
-                                        Dame captured = board.getDame(move);
-                                        Position newPos = gm.getNewPosition(board.getDame(selection), captured);
-                                        board.getDame(selection).capture(captured, board);
-                                        if (!gm.canStillCapture(board, board.getDame(newPos)))
+                            if (isInBoard(x, y)) {
+                                if (e.getButton() == MouseEvent.BUTTON1) {
+                                    if (isInMoves(move)) {
+                                        if (board.getDame(move) instanceof Empty) {
+                                            board.getDame(selection).move(move, board);
                                             isWhiteMove = false;
+                                        } else {
+                                            Dame captured = board.getDame(move);
+                                            Position newPos = gm.getNewPosition(board.getDame(selection), captured);
+                                            board.getDame(selection).capture(captured, board);
+                                            if (!gm.canStillCapture(board, board.getDame(newPos)))
+                                                isWhiteMove = false;
+                                        }
                                     }
                                 }
                             }
+
+                            isSelection = false;
+                            repaint();
+
                         }
-
-                        isSelection = false;
-                        repaint();
-
                     }
+
+                    // black move
+                    if (!isWhiteMove) {
+                        board = bot.getBestMove(board);
+                        repaint();
+                        isWhiteMove = true;
+                    }
+
                 }
 
-                // black move
-                if (!isWhiteMove) {
-                    board = bot.getBestMove(board);
-                    repaint();
-                    isWhiteMove = true;
-                }
-
+                if(gm.isWhiteWinner(board))
+                    statusbar.setText("Human wins!");
+                if(gm.isBlackWinner(board))
+                    statusbar.setText("Bot wins!");
             }
-            if(gm.isBlackWinner(board))
-                statusbar.setText("Bot Wins!");
-            if(gm.isWhiteWinner(board))
-                statusbar.setText("Human Wins!");
-
         }
     }
 }

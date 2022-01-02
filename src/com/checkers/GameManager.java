@@ -156,7 +156,7 @@ public class GameManager {
                                 temp.add(new Position(i, j));
                             }
                         }
-                        else {
+                        else if(!(board.getDame(i, j) instanceof Empty)){
                             if(isCaptureLegal(dame, board.getDame(i, j), board)) {
                                 temp.add(new Position(i, j));
                             }
