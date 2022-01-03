@@ -12,6 +12,8 @@ public class GameUI extends JPanel{
     private GameManager gm;
     private MaxBot bot;
     private boolean isWhiteMove;
+    private int totalPrunes = 0;
+    private int numTrees = 0;
 
     // gui components
     private Image[] images;
@@ -220,6 +222,14 @@ public class GameUI extends JPanel{
 
                     // black move
                     if (!isWhiteMove) {
+                        // experiment
+                        Display d = new Display();
+                        BoardNode node = new BoardNode(board, true);
+                        bot.createTree(node, 0);
+                        bot.determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        totalPrunes += d.getNumPrunes(node, 0);
+                        numTrees++;
+
                         board = bot.getBestMove(board);
                         repaint();
                         isWhiteMove = true;
@@ -227,10 +237,16 @@ public class GameUI extends JPanel{
 
                 }
 
-                if(gm.isWhiteWinner(board))
+                if(gm.isWhiteWinner(board)) {
                     statusbar.setText("Human wins!");
-                if(gm.isBlackWinner(board))
+                    System.out.println(totalPrunes + "\t" + numTrees);
+//                    System.out.println(numTrees);
+                }
+                if(gm.isBlackWinner(board)) {
                     statusbar.setText("Bot wins!");
+                    System.out.println(totalPrunes + "\t" + numTrees);
+//                    System.out.println(numTrees);
+                }
             }
         }
     }
