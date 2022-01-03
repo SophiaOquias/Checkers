@@ -35,25 +35,33 @@ public class MaxBot {
 
                     // check if move is possible
                     if(currentDame.isQueen()) {
-                        for(int row = i - 1; row <= i + 1; row += 2) {
-                            for(int col = j - 1; col <= j + 1; col += 2) {
+                        for(int move = 0; move < 2; move++) {
+                            for (int row = i - 1; row <= i + 1; row += 2) {
+                                for (int col = j - 1; col <= j + 1; col += 2) {
 
-                                // check if within bounds
-                                if(row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
-                                    getCaptures(board, children, isMax, i, j, currentDame, row, col);
-                                    getMoves(board, children, isMax, i, j, currentDame, row, col);
+                                    // check if within bounds
+                                    if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
+                                        if(move == 0)
+                                            getCaptures(board, children, isMax, i, j, currentDame, row, col);
+                                        else
+                                            getMoves(board, children, isMax, i, j, currentDame, row, col);
+                                    }
+
                                 }
-
                             }
                         }
                     }
                     else {
                         int row = (color == Color.WHITE) ? i - 1 : i + 1;
 
-                        for(int col = j - 1; col <= j + 1; col += 2) {
-                            if(row >= 0 && col >= 0 && col < SIZE) {
-                                getCaptures(board, children, isMax, i, j, currentDame, row, col);
-                                getMoves(board, children, isMax, i, j, currentDame, row, col);
+                        for(int move = 0; move < 2; move++) {
+                            for (int col = j - 1; col <= j + 1; col += 2) {
+                                if (row >= 0 && col >= 0 && col < SIZE) {
+                                    if(move == 0)
+                                        getCaptures(board, children, isMax, i, j, currentDame, row, col);
+                                    else
+                                        getMoves(board, children, isMax, i, j, currentDame, row, col);
+                                }
                             }
                         }
 
