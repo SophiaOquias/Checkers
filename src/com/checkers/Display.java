@@ -57,6 +57,25 @@ public class Display {
         }
     }
 
+    // prints total number of nodes pruned in tree
+    public int getNumPrunes(BoardNode node, int count) {
+        if(node.getChildren().size() > 0) {
+            int temp = 0;
+            for(int i = 0; i < node.getChildren().size(); i++) {
+                if(node.getChildren().get(i).getUtility() == Integer.MIN_VALUE ||
+                        node.getChildren().get(i).getUtility() == Integer.MAX_VALUE) {
+                    temp++;
+                }
+            }
+
+            for(int i = 0; i < node.getChildren().size(); i++) {
+                count += getNumPrunes(node.getChildren().get(i), temp);
+            }
+        }
+
+        return count;
+    }
+
     public static Position getPlayerInput(Scanner sc) {
         int row;
         int col;
@@ -120,17 +139,16 @@ public class Display {
 //            }
 //        }
 
-        board.setDame(3, 2, new Dame(3, 2, Color.WHITE));
-        board.setDame(2, 1, new Dame(2, 1, Color.BLACK));
-        board.setDame(2, 3, new Dame(2, 3, Color.BLACK));
-        board.getDame(2, 1).move(3, 0, board);
+        BoardNode node = new BoardNode(board, true);
 
-        d.print(board);
-        System.out.println(gm.isBlackMandatory(board));
+        bot.createTree(node, 0);
 
-//        board = bot.getBestMove(board);
-//
-//        d.print(board);
+        bot.determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+        d.printTree(node, 0);
+
+        System.out.println("Num prunes: " + d.getNumPrunes(node, 0));
+
         sc.close();
     }
 }
