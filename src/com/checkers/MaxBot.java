@@ -40,7 +40,8 @@ public class MaxBot {
 
                                 // check if within bounds
                                 if(row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
-                                    makeChildren(board, children, isMax, i, j, currentDame, row, col);
+                                    getCaptures(board, children, isMax, i, j, currentDame, row, col);
+                                    getMoves(board, children, isMax, i, j, currentDame, row, col);
                                 }
 
                             }
@@ -51,7 +52,8 @@ public class MaxBot {
 
                         for(int col = j - 1; col <= j + 1; col += 2) {
                             if(row >= 0 && col >= 0 && col < SIZE) {
-                                makeChildren(board, children, isMax, i, j, currentDame, row, col);
+                                getCaptures(board, children, isMax, i, j, currentDame, row, col);
+                                getMoves(board, children, isMax, i, j, currentDame, row, col);
                             }
                         }
 
@@ -62,6 +64,67 @@ public class MaxBot {
         }
 
         return children;
+    }
+
+    private void getCaptures(BoardNode board, ArrayList<BoardNode> children, boolean isMax, int i, int j, Dame currentDame, int row, int col) {
+        GameManager gm = new GameManager();
+
+        if(!(board.getDame(row, col) instanceof Empty)){
+            if(gm.isCaptureLegal(currentDame, board.getDame(row, col), board)) {
+                BoardNode child = new BoardNode(board, isMax);
+                Position newPos = gm.getNewPosition(currentDame, board.getDame(row, col));
+                child.getDame(i, j).capture(child.getDame(row, col), child);
+                children.add(child);
+
+//                System.out.println("Is mandatory?: " + gm.isMandatory(child, currentDame.getColor()));
+
+                while(gm.canStillCapture(child, child.getDame(newPos.getRow(), newPos.getCol()))) {
+                    currentDame = child.getDame(newPos.getRow(), newPos.getCol());
+                    if(currentDame.isQueen()) {
+                        for(int x = newPos.getRow() - 1; x <= newPos.getRow() + 1; x++) {
+                            for(int y = newPos.getCol() - 1; y <= newPos.getCol() + 1; y++) {
+                                if(x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+                                    if(!(child.getDame(x, y) instanceof Empty)) {
+                                        if(gm.isCaptureLegal(currentDame, child.getDame(x, y), child)) {
+                                            newPos = gm.getNewPosition(currentDame, child.getDame(x, y));
+                                            currentDame.capture(child.getDame(x, y), child);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        int x = (currentDame.getColor() == Color.WHITE) ? newPos.getRow() - 1 : newPos.getRow() + 1;
+                        for(int y = newPos.getCol() - 1; y <= newPos.getCol() + 1; y++) {
+                            if(x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+                                if(!(child.getDame(x, y) instanceof Empty)) {
+                                    if(gm.isCaptureLegal(currentDame, child.getDame(x, y), child)) {
+                                        newPos = gm.getNewPosition(currentDame, child.getDame(x, y));
+                                        currentDame.capture(child.getDame(x, y), child);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void getMoves(BoardNode board, ArrayList<BoardNode> children,
+                          boolean isMax, int i, int j, Dame currentDame, int row, int col) {
+        GameManager gm = new GameManager();
+
+        if (!gm.isMandatory(board, currentDame.getColor()) && board.getDame(row, col) instanceof Empty) {
+            if (gm.isMoveLegal(currentDame, new Position(row, col), board)) {
+                BoardNode child = new BoardNode(board, isMax);
+                child.getDame(i, j).move(row, col, child);
+                children.add(child);
+            }
+
+            // makes sure that there is a dame in the space to avoid erroneous array access
+        }
     }
 
     private void makeChildren(BoardNode board, ArrayList<BoardNode> children, boolean isMax, int i, int j, Dame currentDame, int row, int col) {
@@ -119,6 +182,7 @@ public class MaxBot {
                 }
             }
         }
+
     }
 
     // void for now
