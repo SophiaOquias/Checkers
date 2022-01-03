@@ -58,22 +58,38 @@ public class Display {
     }
 
     // prints total number of nodes pruned in tree
-    public int getNumPrunes(BoardNode node, int count) {
-        if(node.getChildren().size() > 0) {
-            int temp = 0;
-            for(int i = 0; i < node.getChildren().size(); i++) {
-                if(node.getChildren().get(i).getUtility() == Integer.MIN_VALUE ||
-                        node.getChildren().get(i).getUtility() == Integer.MAX_VALUE) {
-                    temp++;
-                }
+    public int getNumPrunes(BoardNode node, int prunes) {
+
+        if(node.getChildren().size() <= 0) {
+            if(node.getUtility() == Integer.MIN_VALUE ||
+                    node.getUtility() == Integer.MAX_VALUE) {
+                return 1;
             }
 
-            for(int i = 0; i < node.getChildren().size(); i++) {
-                count += getNumPrunes(node.getChildren().get(i), temp);
-            }
+            return 0;
         }
 
-        return count;
+        int utility = (node.getUtility() == Integer.MIN_VALUE ||
+                node.getUtility() == Integer.MAX_VALUE) ? 1 : 0;
+
+        for(int i = 0; i < node.getChildren().size(); i++) {
+            prunes += getNumPrunes(node.getChildren().get(i), utility);
+        }
+
+        return prunes;
+    }
+
+    public int getNumChildren(BoardNode node, int sum) {
+
+        if(node.getChildren().size() <= 0) {
+            return 1;
+        }
+
+        for(int i = 0; i < node.getChildren().size(); i++) {
+            sum += getNumChildren(node.getChildren().get(i), 1);
+        }
+
+        return sum;
     }
 
     public static Position getPlayerInput(Scanner sc) {
@@ -147,6 +163,7 @@ public class Display {
 
         d.printTree(node, 0);
 
+        System.out.println("Num nodes: " + d.getNumChildren(node, 0));
         System.out.println("Num prunes: " + d.getNumPrunes(node, 0));
 
         sc.close();
