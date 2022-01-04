@@ -99,8 +99,6 @@ public class MaxBot {
                 child.getDame(i, j).capture(child.getDame(row, col), child);
                 children.add(child);
 
-//                System.out.println("Is mandatory?: " + gm.isMandatory(child, currentDame.getColor()));
-
                 while(gm.canStillCapture(child, child.getDame(newPos.getRow(), newPos.getCol()))) {
                     currentDame = child.getDame(newPos.getRow(), newPos.getCol());
                     if(currentDame.isQueen()) {
@@ -145,8 +143,6 @@ public class MaxBot {
                 child.getDame(i, j).move(row, col, child);
                 children.add(child);
             }
-
-            // makes sure that there is a dame in the space to avoid erroneous array access
         }
     }
 
@@ -157,10 +153,6 @@ public class MaxBot {
         createTree(node, 0);
 
         determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
-
-        Display d = new Display();
-
-        System.out.println(d.getNumChildren(node, 0) + "\t" + d.getNumPrunes(node, 0));
 
         BoardNode bestNode = node;
 

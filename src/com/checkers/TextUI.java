@@ -2,7 +2,7 @@ package com.checkers;
 
 import java.util.Scanner;
 
-public class Display {
+public class TextUI {
 
     public void print(Board board) {
 
@@ -112,7 +112,7 @@ public class Display {
     }
 
     public static void main(String[] args) {
-        Display d = new Display();
+        TextUI d = new TextUI();
         Board board = new Board();
         GameManager gm = new GameManager();
         MaxBot bot = new MaxBot();
