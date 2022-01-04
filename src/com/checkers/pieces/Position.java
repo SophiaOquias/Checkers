@@ -1,4 +1,4 @@
-package com.checkers;
+package com.checkers.pieces;
 
 public class Position {
     // PROPERTIES

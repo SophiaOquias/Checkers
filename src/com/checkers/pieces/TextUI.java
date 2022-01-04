@@ -1,4 +1,9 @@
-package com.checkers;
+package com.checkers.pieces;
+
+import com.checkers.board.Board;
+import com.checkers.board.BoardNode;
+import com.checkers.game.GameManager;
+import com.checkers.game.MaxBot;
 
 import java.util.Scanner;
 
@@ -111,64 +116,64 @@ public class TextUI {
         return new Position(row, col);
     }
 
-    public static void main(String[] args) {
-        TextUI d = new TextUI();
-        Board board = new Board();
-        GameManager gm = new GameManager();
-        MaxBot bot = new MaxBot();
-        Scanner sc = new Scanner(System.in);
-
-        d.print(board);
-
-//        // mock game
-//        while(!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
-//            // white turn
-//            // select a dame
-//            System.out.println("Select a dame: ");
-//            Position selected;
-//            do {
-//                selected = getPlayerInput(sc);
-//            } while(board.getDame(selected) instanceof Empty);
-//            Dame selectedDame = board.getDame(selected);
+//    public static void main(String[] args) {
+//        TextUI d = new TextUI();
+//        Board board = new Board();
+//        GameManager gm = new GameManager();
+//        MaxBot bot = new MaxBot();
+//        Scanner sc = new Scanner(System.in);
 //
-//            // select a move
-//            System.out.println("Select move: ");
-//            Position selection = getPlayerInput(sc);
-//            if(board.getDame(selection) instanceof Empty) {
-//                selectedDame.move(selection, board);
-//            }
-//            else {
-//                selectedDame.capture(board.getDame(selection), board);
-//            }
+//        d.print(board);
 //
-//            d.print(board);
+////        // mock game
+////        while(!gm.isWhiteWinner(board) && !gm.isBlackWinner(board)) {
+////            // white turn
+////            // select a dame
+////            System.out.println("Select a dame: ");
+////            Position selected;
+////            do {
+////                selected = getPlayerInput(sc);
+////            } while(board.getDame(selected) instanceof Empty);
+////            Dame selectedDame = board.getDame(selected);
+////
+////            // select a move
+////            System.out.println("Select move: ");
+////            Position selection = getPlayerInput(sc);
+////            if(board.getDame(selection) instanceof Empty) {
+////                selectedDame.move(selection, board);
+////            }
+////            else {
+////                selectedDame.capture(board.getDame(selection), board);
+////            }
+////
+////            d.print(board);
+////
+////            // black turn
+////            board = bot.getBestMove(board);
+////
+////            d.print(board);
+////        }
 //
-//            // black turn
-//            board = bot.getBestMove(board);
+////        for(int i = 0; i < 8; i++) {
+////            for(int j = 0; j < 8; j++) {
+////                board.setDame(i, j, new Empty());
+////            }
+////        }
 //
-//            d.print(board);
-//        }
-
-//        for(int i = 0; i < 8; i++) {
-//            for(int j = 0; j < 8; j++) {
-//                board.setDame(i, j, new Empty());
-//            }
-//        }
-
-        BoardNode node = new BoardNode(board, true);
-
-        bot.createTree(node, 0);
-
-        bot.determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
-
-//        d.printTree(node, 0);
-
-//        System.out.println("Num nodes: " + d.getNumChildren(node, 0));
-//        System.out.println("Num prunes: " + d.getNumPrunes(node, 0));
-        System.out.println(d.getNumChildren(node, 0) + "\t" + d.getNumPrunes(node, 0));
-
-        sc.close();
-    }
+//        BoardNode node = new BoardNode(board, true);
+//
+//        bot.createTree(node, 0);
+//
+//        bot.determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
+//
+////        d.printTree(node, 0);
+//
+////        System.out.println("Num nodes: " + d.getNumChildren(node, 0));
+////        System.out.println("Num prunes: " + d.getNumPrunes(node, 0));
+//        System.out.println(d.getNumChildren(node, 0) + "\t" + d.getNumPrunes(node, 0));
+//
+//        sc.close();
+//    }
 }
 
 

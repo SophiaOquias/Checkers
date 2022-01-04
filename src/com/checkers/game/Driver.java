@@ -1,4 +1,4 @@
-package com.checkers;
+package com.checkers.game;
 
 import javax.swing.*;
 import java.awt.*;

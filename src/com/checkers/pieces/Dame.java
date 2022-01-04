@@ -1,4 +1,6 @@
-package com.checkers;
+package com.checkers.pieces;
+
+import com.checkers.board.Board;
 
 public class Dame {
     // PROPERTIES

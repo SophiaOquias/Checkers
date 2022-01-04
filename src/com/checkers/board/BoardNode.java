@@ -1,4 +1,4 @@
-package com.checkers;
+package com.checkers.board;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,10 @@
-package com.checkers;
+package com.checkers.game;
+
+import com.checkers.pieces.Color;
+import com.checkers.pieces.Position;
+import com.checkers.board.Board;
+import com.checkers.pieces.Dame;
+import com.checkers.pieces.Empty;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,9 @@
-package com.checkers;
+package com.checkers.board;
+
+import com.checkers.pieces.Color;
+import com.checkers.pieces.Position;
+import com.checkers.pieces.Dame;
+import com.checkers.pieces.Empty;
 
 public class Board {
 

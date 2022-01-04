@@ -1,6 +1,13 @@
-package com.checkers;
+package com.checkers.game;
 
-import java.lang.reflect.Array;
+import com.checkers.board.Board;
+import com.checkers.board.BoardNode;
+import com.checkers.game.GameManager;
+import com.checkers.pieces.Color;
+import com.checkers.pieces.Dame;
+import com.checkers.pieces.Empty;
+import com.checkers.pieces.Position;
+
 import java.util.ArrayList;
 
 public class MaxBot {
