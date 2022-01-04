@@ -161,10 +161,11 @@ public class Display {
 
         bot.determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-        d.printTree(node, 0);
+//        d.printTree(node, 0);
 
-        System.out.println("Num nodes: " + d.getNumChildren(node, 0));
-        System.out.println("Num prunes: " + d.getNumPrunes(node, 0));
+//        System.out.println("Num nodes: " + d.getNumChildren(node, 0));
+//        System.out.println("Num prunes: " + d.getNumPrunes(node, 0));
+        System.out.println(d.getNumChildren(node, 0) + "\t" + d.getNumPrunes(node, 0));
 
         sc.close();
     }
