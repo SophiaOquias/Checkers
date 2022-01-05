@@ -79,21 +79,7 @@ public class MaxBot {
             }
         }
 
-        sortChildren(children);
-
         return children;
-    }
-
-    private void sortChildren(ArrayList<BoardNode> nodeList) {
-        for(int j = 1; j < nodeList.size(); j++) {
-            BoardNode key = nodeList.get(j);
-            int i = j - 1;
-            while(i >= 0 && determineUtility(key) >= determineUtility(nodeList.get(i))) {
-                nodeList.set(i + 1, nodeList.get(i));
-                i--;
-            }
-            nodeList.set(i + 1, key);
-        }
     }
 
     private void getCaptures(BoardNode board, ArrayList<BoardNode> children, boolean isMax, int i, int j, Dame currentDame, int row, int col) {
