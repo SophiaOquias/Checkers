@@ -139,11 +139,77 @@ public class MaxBot {
         }
     }
 
-    // void for now
+    public void sortDescending(ArrayList<BoardNode> nodeList) {
+        for(int j = 1; j < nodeList.size(); j++) {
+            BoardNode key = nodeList.get(j);
+            int i = j - 1;
+            while(i >= 0 && key.getUtility() > nodeList.get(i).getUtility()) {
+                nodeList.set(i + 1, nodeList.get(i));
+                i--;
+            }
+            nodeList.set(i + 1, key);
+        }
+    }
+
+    public void sortAscending(ArrayList<BoardNode> nodeList) {
+        for(int j = 1; j < nodeList.size(); j++) {
+            BoardNode key = nodeList.get(j);
+            int i = j - 1;
+            while(i >= 0 && key.getUtility() < nodeList.get(i).getUtility()) {
+                nodeList.set(i + 1, nodeList.get(i));
+                i--;
+            }
+            nodeList.set(i + 1, key);
+        }
+    }
+
+    public void orderMoves(BoardNode node) {
+        if(node.getChildren().size() > 0) {
+
+            for(int i = 0; i < node.getChildren().size(); i++) {
+                orderMoves(node.getChildren().get(i));
+            }
+
+            determineValues(node, node.isMax(), Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            if(node.isMax()) {
+                sortDescending(node.getChildren());
+            }
+            else {
+                sortAscending(node.getChildren());
+            }
+        }
+    }
+
+    public void resetUtilities(BoardNode node) {
+        if(node.getChildren().size() <= 0) {
+            if(node.isMax()) {
+                node.setUtility(Integer.MIN_VALUE);
+            }
+            else {
+                node.setUtility(Integer.MAX_VALUE);
+            }
+        }
+
+        for(int i = 0; i < node.getChildren().size(); i++) {
+            resetUtilities(node.getChildren().get(i));
+        }
+
+        if(node.isMax()) {
+            node.setUtility(Integer.MIN_VALUE);
+        }
+        else {
+            node.setUtility(Integer.MAX_VALUE);
+        }
+    }
     public BoardNode getBestMove(Board board) {
         BoardNode node = new BoardNode(board, true);
 
         createTree(node, 0);
+
+        orderMoves(node);
+
+        resetUtilities(node);
 
         determineValues(node, true, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
