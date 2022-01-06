@@ -202,6 +202,7 @@ public class MaxBot {
             node.setUtility(Integer.MAX_VALUE);
         }
     }
+
     public BoardNode getBestMove(Board board) {
         BoardNode node = new BoardNode(board, true);
 
