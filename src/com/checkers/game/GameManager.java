@@ -335,7 +335,7 @@ public class GameManager {
 
     public boolean isBlackWinner(Board board) {
 
-        if(board.countWhite() == 0 || getNumPossibleMoves(board, Color.BLACK) == 0)
+        if(board.countWhite() == 0 || getNumPossibleMoves(board, Color.WHITE) == 0)
             return true;
 
         return false;
